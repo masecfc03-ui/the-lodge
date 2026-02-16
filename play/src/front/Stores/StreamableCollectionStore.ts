@@ -1,6 +1,8 @@
+import type { ComponentType } from "svelte";
 import type { Readable, Writable } from "svelte/store";
 import { derived, get, writable } from "svelte/store";
 import type { RemoteVideoTrack } from "livekit-client";
+import ListenerBox from "../Components/Video/ListenerBox.svelte";
 import { LayoutMode } from "../WebRtc/LayoutManager";
 import type { PeerStatus } from "../WebRtc/RemotePeer";
 import type { VideoConfig } from "../Api/Events/Ui/PlayVideoEvent";
@@ -59,12 +61,18 @@ export interface ScriptingVideoStreamable {
     readonly isBlocked: Readable<boolean>;
 }
 
+export interface ComponentStreamable {
+    type: "component";
+    component: ComponentType;
+    readonly isBlocked: Readable<boolean>;
+}
+
 export type StreamOrigin = "local" | "remote";
 export type StreamCategory = "video" | "screenSharing" | "scripting";
 
 export interface Streamable {
     readonly uniqueId: string;
-    readonly media: LivekitStreamable | WebRtcStreamable | ScriptingVideoStreamable;
+    readonly media: LivekitStreamable | WebRtcStreamable | ScriptingVideoStreamable | ComponentStreamable;
     readonly volumeStore: Readable<number[] | undefined> | undefined;
     readonly hasVideo: Readable<boolean>;
     readonly hasAudio: Readable<boolean>;
@@ -100,6 +108,9 @@ export interface MyLocalStreamable extends Streamable {
 export const SCREEN_SHARE_STARTING_PRIORITY = 1000; // Priority for screen sharing streams
 export const VIDEO_STARTING_PRIORITY = 2000; // Priority for other video streams
 export const LAST_VIDEO_BOX_PRIORITY = 20000; // Priority for the last video boxes
+
+export const LISTENER_BOX_UNIQUE_ID = "listener-box";
+export const LISTENER_BOX_PRIORITY = -4;
 
 const localstreamStoreValue = derived(localStreamStore, (myLocalStream) => {
     if (myLocalStream.type === "success") {
@@ -152,6 +163,38 @@ export const myCameraPeerStore: Readable<VideoBox> = derived([LL], ([$LL]) => {
     };
     return streamableToVideoBox(streamable, -2);
 });
+
+const listenerBoxStreamable: VideoBox = {
+    uniqueId: LISTENER_BOX_UNIQUE_ID,
+    spaceUser: localSpaceUser("Listener"),
+    streamable: writable<Streamable>({
+        uniqueId: LISTENER_BOX_UNIQUE_ID,
+        media: {
+            type: "component",
+            component: ListenerBox,
+            isBlocked: writable(false),
+        },
+        volumeStore: undefined,
+        hasVideo: writable(true),
+        hasAudio: writable(false),
+        isMuted: writable(true),
+        statusStore: writable("connected" as const),
+        name: writable("Listener"),
+        showVoiceIndicator: writable(false),
+        flipX: false,
+        muteAudio: writable(true),
+        displayMode: "fit",
+        displayInPictureInPictureMode: false,
+        usePresentationMode: false,
+        spaceUserId: undefined,
+        closeStreamable: () => {},
+        volume: writable(1),
+        videoType: "video",
+        webrtcStats: undefined,
+    }),
+    priority: LISTENER_BOX_PRIORITY,
+    displayOrder: writable(9999),
+};
 
 /**
  * A store that contains everything that can produce a stream (so the peers + the local screen sharing stream)
@@ -226,6 +269,10 @@ function createStreamableCollectionStore(): Readable<Map<string, VideoBox>> {
 
             if ($screenSharingLocalMedia && $screenSharingLocalMedia.media.type === "webrtc") {
                 addPeer(streamableToVideoBox($screenSharingLocalMedia, -1));
+            }
+
+            if ($isListenerStore && (peers.size === 0 || (peers.size === 1 && peers.has("-1")))) {
+                addPeer(listenerBoxStreamable);
             }
 
             const $highlightedEmbedScreen = get(highlightedEmbedScreen);
