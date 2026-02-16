@@ -3,7 +3,11 @@ export class UI {
         this.isMobile = isMobile;
         this.setupEventListeners();
         this.startClock();
-        this.updateMinimap();
+        
+        // Initial minimap update
+        setTimeout(() => {
+            this.updateMinimap();
+        }, 100);
     }
     
     setupEventListeners() {
@@ -34,43 +38,85 @@ export class UI {
                 hour: 'numeric',
                 minute: '2-digit'
             });
-            document.getElementById('clock').textContent = timeString;
+            const clockElement = document.getElementById('clock');
+            if (clockElement) {
+                clockElement.textContent = timeString;
+            }
         };
         
         updateClock();
         setInterval(updateClock, 1000);
     }
     
-    updateMinimap() {
+    updateMinimap(currentRoom = 'Main Hall', playerX = 630, playerY = 480) {
         const canvas = document.getElementById('minimap');
+        if (!canvas) return;
+        
         const ctx = canvas.getContext('2d');
         
         // Clear canvas
-        ctx.fillStyle = '#2d1810';
+        ctx.fillStyle = '#0a1f0a'; // Dark forest background
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        // Draw rooms (simplified)
-        ctx.fillStyle = '#8b4513';
+        // Lodge background
+        ctx.fillStyle = '#3d2214';
+        ctx.fillRect(10, 5, 160, 110);
         ctx.strokeStyle = '#654321';
-        ctx.lineWidth = 1;
+        ctx.lineWidth = 2;
+        ctx.strokeRect(10, 5, 160, 110);
         
-        const scale = 0.15;
-        const rooms = [
-            { x: 20, y: 20 }, { x: 80, y: 20 }, { x: 140, y: 20 },
-            { x: 20, y: 60 }, { x: 80, y: 60 }, { x: 140, y: 60 },
-            { x: 20, y: 100 }, { x: 80, y: 100 }, { x: 140, y: 100 }
+        // Draw rooms as rectangles (3x3 grid)
+        const roomWidth = 50;
+        const roomHeight = 33;
+        const startX = 15;
+        const startY = 10;
+        
+        const roomPositions = [
+            { name: 'Base Camp', x: startX, y: startY },
+            { name: 'Projects', x: startX + roomWidth, y: startY },
+            { name: 'The Team', x: startX + roomWidth*2, y: startY },
+            { name: 'Treasury', x: startX, y: startY + roomHeight },
+            { name: 'Main Hall', x: startX + roomWidth, y: startY + roomHeight },
+            { name: 'Command Center', x: startX + roomWidth*2, y: startY + roomHeight },
+            { name: 'Jukebox', x: startX, y: startY + roomHeight*2 },
+            { name: 'Field Journal', x: startX + roomWidth, y: startY + roomHeight*2 },
+            { name: 'Trail Cams', x: startX + roomWidth*2, y: startY + roomHeight*2 }
         ];
         
-        rooms.forEach(room => {
-            ctx.fillRect(room.x - 15, room.y - 10, 30, 20);
-            ctx.strokeRect(room.x - 15, room.y - 10, 30, 20);
+        roomPositions.forEach(room => {
+            // Highlight current room
+            if (room.name === currentRoom) {
+                ctx.fillStyle = '#ff8c00';
+                ctx.fillRect(room.x - 2, room.y - 2, roomWidth - 6, roomHeight - 6);
+            }
+            
+            // Room outline
+            ctx.strokeStyle = '#654321';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(room.x, room.y, roomWidth - 10, roomHeight - 6);
+            
+            // Room name (abbreviated)
+            ctx.fillStyle = '#e6d3a3';
+            ctx.font = '8px Courier New';
+            ctx.fillText(room.name.substring(0, 4), room.x + 2, room.y + 12);
         });
         
-        // Draw player dot (center room for now)
+        // Draw player dot
+        // Convert world coordinates to minimap coordinates
+        const minimapPlayerX = ((playerX - 30) / 1240) * 160 + 10;
+        const minimapPlayerY = ((playerY - 30) / 940) * 110 + 5;
+        
         ctx.fillStyle = '#32cd32';
         ctx.beginPath();
-        ctx.arc(80, 60, 3, 0, Math.PI * 2);
+        ctx.arc(minimapPlayerX, minimapPlayerY, 3, 0, Math.PI * 2);
         ctx.fill();
+        
+        // Player outline
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(minimapPlayerX, minimapPlayerY, 3, 0, Math.PI * 2);
+        ctx.stroke();
     }
     
     openPanel(roomName, objectType) {

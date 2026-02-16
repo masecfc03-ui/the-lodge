@@ -5,17 +5,21 @@ export class GameScene extends Phaser.Scene {
     constructor() {
         super({ key: 'GameScene' });
         
-        // Room definitions with their positions and interactive objects
+        // Room definitions with their positions and interactive objects (400x300 rooms with 30px walls)
+        this.roomWidth = 400;
+        this.roomHeight = 300;
+        this.wallThickness = 30;
+        
         this.rooms = {
-            'Base Camp': { x: 200, y: 200, object: { x: 250, y: 250, type: 'fireplace' } },
-            'Projects': { x: 400, y: 200, object: { x: 450, y: 250, type: 'desk' } },
-            'The Team': { x: 600, y: 200, object: { x: 650, y: 250, type: 'bunks' } },
-            'Treasury': { x: 200, y: 400, object: { x: 250, y: 450, type: 'safe' } },
-            'Main Hall': { x: 400, y: 400, object: { x: 450, y: 450, type: 'spawn' } },
-            'Command Center': { x: 600, y: 400, object: { x: 650, y: 450, type: 'radio' } },
-            'Jukebox': { x: 200, y: 600, object: { x: 250, y: 650, type: 'jukebox' } },
-            'Field Journal': { x: 400, y: 600, object: { x: 450, y: 650, type: 'bookshelf' } },
-            'Trail Cams': { x: 600, y: 600, object: { x: 650, y: 650, type: 'monitors' } }
+            'Base Camp': { x: 230, y: 180, object: { x: 230, y: 180, type: 'fireplace' }, color: '#3d2214' },
+            'Projects': { x: 630, y: 180, object: { x: 630, y: 180, type: 'desk' }, color: '#3e2415' },
+            'The Team': { x: 1030, y: 180, object: { x: 1030, y: 180, type: 'bunks' }, color: '#3f2516' },
+            'Treasury': { x: 230, y: 480, object: { x: 230, y: 480, type: 'safe' }, color: '#402617' },
+            'Main Hall': { x: 630, y: 480, object: { x: 630, y: 480, type: 'spawn' }, color: '#412718' },
+            'Command Center': { x: 1030, y: 480, object: { x: 1030, y: 480, type: 'radio' }, color: '#422819' },
+            'Jukebox': { x: 230, y: 780, object: { x: 230, y: 780, type: 'jukebox' }, color: '#43291a' },
+            'Field Journal': { x: 630, y: 780, object: { x: 630, y: 780, type: 'bookshelf' }, color: '#442a1b' },
+            'Trail Cams': { x: 1030, y: 780, object: { x: 1030, y: 780, type: 'monitors' }, color: '#452b1c' }
         };
         
         this.currentRoom = 'Main Hall';
@@ -32,10 +36,10 @@ export class GameScene extends Phaser.Scene {
         // Create room graphics
         this.createRooms();
         
-        // Create player
-        this.player = this.add.circle(450, 450, 15, 0x32cd32);
-        this.playerLabel = this.add.text(450, 430, 'M', {
-            fontSize: '16px',
+        // Create player (18px radius, bright green with white M)
+        this.player = this.add.circle(630, 480, 18, 0x32cd32);
+        this.playerLabel = this.add.text(630, 480, 'M', {
+            fontSize: '20px',
             fontFamily: 'Courier New, monospace',
             color: '#ffffff',
             fontWeight: 'bold'
@@ -44,7 +48,15 @@ export class GameScene extends Phaser.Scene {
         // Enable physics for player
         this.physics.add.existing(this.player);
         this.player.body.setCollideWorldBounds(true);
-        this.player.body.setSize(30, 30);
+        this.player.body.setSize(36, 36);
+        
+        // Create trail effect (3 fading circles)
+        this.playerTrail = [];
+        for (let i = 0; i < 3; i++) {
+            const trailCircle = this.add.circle(630, 480, 16 - i * 4, 0x32cd32, 0.6 - i * 0.15);
+            trailCircle.visible = false;
+            this.playerTrail.push(trailCircle);
+        }
         
         // Create interactive objects
         this.interactiveObjects = this.physics.add.group();
@@ -58,9 +70,13 @@ export class GameScene extends Phaser.Scene {
             this.setupMobileControls();
         }
         
-        // Camera follow player
+        // Set world background (dark forest green outside the lodge)
+        this.cameras.main.setBackgroundColor('#0a1f0a');
+        
+        // Camera follow player with appropriate zoom
         this.cameras.main.startFollow(this.player);
-        this.cameras.main.setZoom(1);
+        const zoom = window.isMobile ? 1.5 : 1.2;
+        this.cameras.main.setZoom(zoom);
         
         // Create particles
         this.createParticles();
@@ -73,82 +89,136 @@ export class GameScene extends Phaser.Scene {
     
     createRooms() {
         this.roomGraphics = this.add.group();
+        this.wallsGroup = this.physics.add.staticGroup();
         
         Object.entries(this.rooms).forEach(([roomName, room]) => {
-            // Room floor (wood color)
-            const floor = this.add.rectangle(room.x, room.y, 200, 200, 0x8B4513);
-            floor.setStrokeStyle(4, 0x654321);
+            const x = room.x;
+            const y = room.y;
+            const w = this.roomWidth;
+            const h = this.roomHeight;
+            const wallT = this.wallThickness;
             
-            // Room walls (darker brown)
-            const walls = this.add.rectangle(room.x, room.y, 200, 200);
-            walls.setStrokeStyle(8, 0x2F1B14);
+            // Room floor with distinct color per room
+            const floor = this.add.rectangle(x, y, w, h, parseInt(room.color.replace('#', '0x')));
             
-            // Room label
-            const label = this.add.text(room.x, room.y - 120, roomName, {
-                fontSize: '14px',
+            // Room label INSIDE the room, at the top
+            const label = this.add.text(x, y - h/2 + 40, roomName, {
+                fontSize: '16px',
                 fontFamily: 'Courier New, monospace',
                 color: '#e6d3a3',
                 fontWeight: 'bold',
                 backgroundColor: 'rgba(45, 24, 16, 0.8)',
-                padding: { x: 8, y: 4 }
+                padding: { x: 10, y: 6 }
             }).setOrigin(0.5);
             
             this.roomGraphics.add(floor);
-            this.roomGraphics.add(walls);
             this.roomGraphics.add(label);
         });
         
-        // Create doorways (gaps in walls)
-        this.createDoorways();
+        // Create walls with collision
+        this.createWalls();
+        
+        // Set world bounds to match the lodge size (~1300x1000)
+        this.physics.world.setBounds(0, 0, 1300, 1000);
     }
     
-    createDoorways() {
-        // Horizontal doorways
-        const doorwayColor = 0x8B4513;
+    createWalls() {
+        const wallColor = 0x2F1B14;
+        const wallT = this.wallThickness;
+        const doorwayWidth = 60;
         
-        // Top row connections
-        this.add.rectangle(300, 200, 20, 8, doorwayColor); // Base Camp to Projects
-        this.add.rectangle(500, 200, 20, 8, doorwayColor); // Projects to The Team
+        // Helper function to create wall segment
+        const createWall = (x, y, width, height) => {
+            const wall = this.add.rectangle(x, y, width, height, wallColor);
+            this.physics.add.existing(wall, true); // true = static
+            this.wallsGroup.add(wall);
+        };
         
-        // Middle row connections  
-        this.add.rectangle(300, 400, 20, 8, doorwayColor); // Treasury to Main Hall
-        this.add.rectangle(500, 400, 20, 8, doorwayColor); // Main Hall to Command Center
+        // Room positions for easier reference
+        const rooms = [
+            { x: 230, y: 180 }, { x: 630, y: 180 }, { x: 1030, y: 180 }, // Top row
+            { x: 230, y: 480 }, { x: 630, y: 480 }, { x: 1030, y: 480 }, // Middle row
+            { x: 230, y: 780 }, { x: 630, y: 780 }, { x: 1030, y: 780 }  // Bottom row
+        ];
         
-        // Bottom row connections
-        this.add.rectangle(300, 600, 20, 8, doorwayColor); // Jukebox to Field Journal
-        this.add.rectangle(500, 600, 20, 8, doorwayColor); // Field Journal to Trail Cams
+        // Create outer walls of the entire lodge
+        // Top wall
+        createWall(630, 30, 1200, wallT);
+        // Bottom wall
+        createWall(630, 930, 1200, wallT);
+        // Left wall
+        createWall(30, 480, wallT, 840);
+        // Right wall
+        createWall(1230, 480, wallT, 840);
         
-        // Vertical doorways
-        this.add.rectangle(200, 300, 8, 20, doorwayColor); // Base Camp to Treasury
-        this.add.rectangle(400, 300, 8, 20, doorwayColor); // Projects to Main Hall
-        this.add.rectangle(600, 300, 8, 20, doorwayColor); // The Team to Command Center
+        // Create internal walls with doorways
+        // Horizontal walls between room rows
+        rooms.forEach((room, i) => {
+            if (i < 6) { // Not bottom row
+                const y = room.y + this.roomHeight/2 + wallT/2;
+                // Left segment of wall
+                createWall(room.x - this.roomWidth/2 + (this.roomWidth - doorwayWidth)/4, y, (this.roomWidth - doorwayWidth)/2, wallT);
+                // Right segment of wall
+                createWall(room.x + this.roomWidth/2 - (this.roomWidth - doorwayWidth)/4, y, (this.roomWidth - doorwayWidth)/2, wallT);
+            }
+        });
         
-        this.add.rectangle(200, 500, 8, 20, doorwayColor); // Treasury to Jukebox
-        this.add.rectangle(400, 500, 8, 20, doorwayColor); // Main Hall to Field Journal
-        this.add.rectangle(600, 500, 8, 20, doorwayColor); // Command Center to Trail Cams
+        // Vertical walls between room columns
+        rooms.forEach((room, i) => {
+            if (i % 3 !== 2) { // Not rightmost column
+                const x = room.x + this.roomWidth/2 + wallT/2;
+                // Top segment of wall
+                createWall(x, room.y - this.roomHeight/2 + (this.roomHeight - doorwayWidth)/4, wallT, (this.roomHeight - doorwayWidth)/2);
+                // Bottom segment of wall
+                createWall(x, room.y + this.roomHeight/2 - (this.roomHeight - doorwayWidth)/4, wallT, (this.roomHeight - doorwayWidth)/2);
+            }
+        });
+        
+        // Set up collision between player and walls
+        this.physics.add.collider(this.player, this.wallsGroup);
     }
     
     createInteractiveObjects() {
         Object.entries(this.rooms).forEach(([roomName, room]) => {
             if (room.object.type === 'spawn') return; // Skip spawn point
             
-            // Create glowing object
-            const obj = this.add.circle(room.object.x, room.object.y, 20, this.getObjectColor(room.object.type));
-            obj.setStrokeStyle(3, 0xFF8C00);
+            // Create glowing object (30px radius)
+            const obj = this.add.circle(room.object.x, room.object.y, 30, this.getObjectColor(room.object.type));
+            obj.setStrokeStyle(4, 0xFF8C00);
+            
+            // Add emoji icon label on top of object
+            const emoji = this.getObjectEmoji(room.object.type);
+            const label = this.add.text(room.object.x, room.object.y, emoji, {
+                fontSize: '24px',
+                fontFamily: 'Arial, sans-serif'
+            }).setOrigin(0.5);
             
             // Add physics
             this.physics.add.existing(obj);
             obj.body.setImmovable(true);
             obj.roomName = roomName;
             obj.objectType = room.object.type;
+            obj.emoji = label; // Store reference to label
             
             this.interactiveObjects.add(obj);
             
-            // Add glow animation
+            // Add dramatic glow animation
             this.tweens.add({
                 targets: obj,
-                alpha: { from: 0.7, to: 1.0 },
-                duration: 2000,
+                alpha: { from: 0.5, to: 1.0 },
+                scaleX: { from: 0.9, to: 1.1 },
+                scaleY: { from: 0.9, to: 1.1 },
+                duration: 1500,
+                yoyo: true,
+                repeat: -1,
+                ease: 'Sine.easeInOut'
+            });
+            
+            // Also animate the emoji label
+            this.tweens.add({
+                targets: label,
+                y: { from: room.object.y - 5, to: room.object.y + 5 },
+                duration: 2500,
                 yoyo: true,
                 repeat: -1,
                 ease: 'Sine.easeInOut'
@@ -168,6 +238,20 @@ export class GameScene extends Phaser.Scene {
             monitors: 0x00CED1
         };
         return colors[type] || 0xFF8C00;
+    }
+    
+    getObjectEmoji(type) {
+        const emojis = {
+            fireplace: '🔥',
+            desk: '📋',
+            bunks: '🛏️',
+            safe: '💰',
+            radio: '📡',
+            jukebox: '🎵',
+            bookshelf: '📚',
+            monitors: '📷'
+        };
+        return emojis[type] || '❓';
     }
     
     setupInput() {
@@ -219,11 +303,11 @@ export class GameScene extends Phaser.Scene {
     }
     
     createParticles() {
-        // Create floating dust particles for atmosphere
-        for (let i = 0; i < 50; i++) {
+        // Create floating dust particles for atmosphere within the lodge area
+        for (let i = 0; i < 60; i++) {
             const particle = this.add.circle(
-                Phaser.Math.Between(0, 1200),
-                Phaser.Math.Between(0, 800),
+                Phaser.Math.Between(50, 1250),
+                Phaser.Math.Between(50, 950),
                 Phaser.Math.Between(1, 3),
                 0xDDDDDD,
                 Phaser.Math.FloatBetween(0.1, 0.3)
@@ -272,8 +356,25 @@ export class GameScene extends Phaser.Scene {
             this.player.body.setVelocity(velocityX, velocityY);
         }
         
-        // Update player label position
-        this.playerLabel.setPosition(this.player.x, this.player.y - 20);
+        // Update player label position (centered on player)
+        this.playerLabel.setPosition(this.player.x, this.player.y);
+        
+        // Update player trail effect
+        if (this.player.body.velocity.x !== 0 || this.player.body.velocity.y !== 0) {
+            // Show trail when moving
+            this.playerTrail.forEach((trail, index) => {
+                trail.visible = true;
+                const delay = (index + 1) * 50; // Stagger the trail
+                this.time.delayedCall(delay, () => {
+                    trail.setPosition(this.player.x, this.player.y);
+                });
+            });
+        } else {
+            // Hide trail when stationary
+            this.playerTrail.forEach(trail => {
+                trail.visible = false;
+            });
+        }
         
         // Check room changes and nearby objects
         this.updateCurrentRoom();
@@ -286,8 +387,9 @@ export class GameScene extends Phaser.Scene {
         const playerY = this.player.y;
         
         Object.entries(this.rooms).forEach(([roomName, room]) => {
-            const distance = Phaser.Math.Distance.Between(playerX, playerY, room.x, room.y);
-            if (distance < 100) { // Within room bounds
+            // Check if player is within room bounds (400x300 rooms)
+            if (playerX >= room.x - this.roomWidth/2 && playerX <= room.x + this.roomWidth/2 &&
+                playerY >= room.y - this.roomHeight/2 && playerY <= room.y + this.roomHeight/2) {
                 newRoom = roomName;
             }
         });
@@ -295,6 +397,11 @@ export class GameScene extends Phaser.Scene {
         if (newRoom && newRoom !== this.currentRoom) {
             this.currentRoom = newRoom;
             document.getElementById('room-name').textContent = this.currentRoom;
+            
+            // Update minimap when room changes
+            if (window.lodgeUI) {
+                window.lodgeUI.updateMinimap(this.currentRoom, this.player.x, this.player.y);
+            }
         }
     }
     

@@ -13,7 +13,7 @@ const config = {
     width: 1200,
     height: 800,
     parent: 'game-container',
-    backgroundColor: '#2d1810',
+    backgroundColor: '#0a1f0a', // Dark forest green
     physics: {
         default: 'arcade',
         arcade: {
