@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Lodge — Mathis Land Co</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #2d1810;
+            overflow: hidden;
+            color: #e6d3a3;
+        }
+        
+        #game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+        
+        /* HUD Elements */
+        #hud {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            pointer-events: none;
+        }
+        
+        .hud-element {
+            background: rgba(45, 24, 16, 0.9);
+            border: 2px solid #8b4513;
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-size: 14px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+        }
+        
+        /* Interaction Prompt */
+        #interaction-prompt {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(45, 24, 16, 0.95);
+            border: 2px solid #ff8c00;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            color: #ff8c00;
+            display: none;
+            z-index: 1001;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 5px #ff8c00; }
+            50% { box-shadow: 0 0 20px #ff8c00; }
+        }
+        
+        /* Overlay Panel */
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            display: none;
+        }
+        
+        #panel {
+            position: absolute;
+            right: -400px;
+            top: 0;
+            bottom: 0;
+            width: 400px;
+            background: linear-gradient(135deg, #3d2817, #4a3224);
+            border-left: 3px solid #8b4513;
+            transition: right 0.3s ease-in-out;
+            overflow-y: auto;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        #panel.open {
+            right: 0;
+        }
+        
+        .panel-header {
+            background: linear-gradient(135deg, #8b4513, #a0522d);
+            padding: 20px;
+            border-bottom: 2px solid #654321;
+            position: sticky;
+            top: 0;
+            z-index: 2001;
+        }
+        
+        .panel-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e6d3a3;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+        
+        .close-btn {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            background: none;
+            border: none;
+            color: #e6d3a3;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .panel-content {
+            padding: 20px;
+            color: #e6d3a3;
+            line-height: 1.6;
+        }
+        
+        /* Mobile Controls */
+        #mobile-controls {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1500;
+            display: none;
+            pointer-events: none;
+        }
+        
+        #joystick-area {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: 120px;
+            height: 120px;
+            pointer-events: all;
+        }
+        
+        #interact-btn {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 140, 0, 0.9);
+            border: 3px solid #ff8c00;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            pointer-events: all;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        #interact-btn:active {
+            transform: scale(0.9);
+            background: rgba(255, 140, 0, 1);
+        }
+        
+        /* Minimap */
+        #minimap {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 180px;
+            height: 120px;
+            background: rgba(45, 24, 16, 0.9);
+            border: 2px solid #8b4513;
+            border-radius: 8px;
+            z-index: 1001;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            #panel {
+                width: 100vw;
+                right: -100vw;
+            }
+            
+            #mobile-controls {
+                display: block;
+            }
+            
+            #minimap {
+                width: 120px;
+                height: 80px;
+                bottom: 160px;
+            }
+        }
+        
+        /* Stats and data styling */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: rgba(139, 69, 19, 0.3);
+            border: 1px solid #8b4513;
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff8c00;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #c4a374;
+            margin-top: 5px;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .lodge-btn {
+            flex: 1;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #8b4513, #a0522d);
+            border: 2px solid #654321;
+            border-radius: 6px;
+            color: #e6d3a3;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+        
+        .lodge-btn:hover {
+            background: linear-gradient(135deg, #a0522d, #b8651f);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .team-member {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            padding: 12px;
+            background: rgba(139, 69, 19, 0.2);
+            border-radius: 6px;
+            border: 1px solid #654321;
+        }
+        
+        .member-status {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        
+        .member-status.active { background: #32cd32; }
+        .member-status.away { background: #ffa500; }
+        .member-status.busy { background: #ff4444; }
+        
+        .member-info h4 {
+            margin: 0 0 4px 0;
+            color: #e6d3a3;
+            font-size: 16px;
+        }
+        
+        .member-role {
+            color: #c4a374;
+            font-size: 12px;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <!-- HUD -->
+        <div id="hud">
+            <div id="room-name" class="hud-element">Main Hall</div>
+            <div id="lodge-info" class="hud-element">
+                <div>The Lodge — Mathis Land Co</div>
+                <div id="clock" style="font-size: 12px; margin-top: 5px;">--:-- --</div>
+            </div>
+        </div>
+        
+        <!-- Interaction Prompt -->
+        <div id="interaction-prompt">Press E to interact</div>
+        
+        <!-- Minimap -->
+        <canvas id="minimap" width="180" height="120"></canvas>
+        
+        <!-- Mobile Controls -->
+        <div id="mobile-controls">
+            <div id="joystick-area"></div>
+            <button id="interact-btn">E</button>
+        </div>
+    </div>
+    
+    <!-- Overlay Panel -->
+    <div id="overlay">
+        <div id="panel">
+            <div class="panel-header">
+                <h2 id="panel-title" class="panel-title">Room Panel</h2>
+                <button id="close-panel" class="close-btn">&times;</button>
+            </div>
+            <div id="panel-content" class="panel-content">
+                <!-- Content will be dynamically loaded -->
+            </div>
+        </div>
+    </div>
+    
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>
