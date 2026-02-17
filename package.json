@@ -1,7 +1,7 @@
 {
   "name": "the-lodge",
-  "version": "1.0.0",
-  "description": "",
+  "version": "2.0.0",
+  "description": "Premium Lodge-Themed Life OS Dashboard",
   "main": "index.js",
   "scripts": {
     "dev": "vite",
@@ -12,16 +12,14 @@
     "type": "git",
     "url": "git+https://github.com/masecfc03-ui/the-lodge.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["dashboard", "lodge", "life-os"],
+  "author": "Mason Mathis",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/masecfc03-ui/the-lodge/issues"
   },
-  "homepage": "https://github.com/masecfc03-ui/the-lodge#readme",
+  "homepage": "https://masecfc03-ui.github.io/the-lodge/",
   "devDependencies": {
-    "nipplejs": "^0.10.2",
-    "phaser": "^3.90.0",
     "vite": "^7.3.1"
   }
 }

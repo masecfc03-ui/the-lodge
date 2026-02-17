@@ -4,15 +4,7 @@ export default defineConfig({
   base: '/the-lodge/',
   build: {
     outDir: 'dist',
-    assetsDir: 'assets',
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          phaser: ['phaser'],
-          nipplejs: ['nipplejs']
-        }
-      }
-    }
+    assetsDir: 'assets'
   },
   server: {
     port: 3000,
