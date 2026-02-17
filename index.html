@@ -3,592 +3,407 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Lodge — Mathis Land Co</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        :root {
-            --lodge-primary: #8b4513;
-            --lodge-secondary: #a0522d;
-            --lodge-accent: #ff8c00;
-            --lodge-gold: #ffd700;
-            --lodge-dark: #2d1810;
-            --lodge-darker: #1a0f08;
-            --lodge-light: #e6d3a3;
-            --lodge-text-secondary: #c4a374;
-            --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.3);
-            --shadow-hard: 0 4px 16px rgba(0, 0, 0, 0.4);
-            --gradient-glass: linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.1), 
-                rgba(255, 255, 255, 0.05)
-            );
-            --backdrop-blur: blur(16px);
-        }
-        
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, 
-                #0F2027 0%, 
-                #203A43 35%, 
-                #2C5364 100%
-            );
-            overflow: hidden;
-            color: var(--lodge-light);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            min-height: 100vh;
-        }
-        
-        #game-container {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-        }
-        
-        /* Enhanced HUD Elements */
-        #hud {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            pointer-events: none;
-        }
-        
-        .hud-element {
-            background: var(--gradient-glass);
-            backdrop-filter: var(--backdrop-blur);
-            -webkit-backdrop-filter: var(--backdrop-blur);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 16px;
-            padding: 16px 24px;
-            font-size: 15px;
-            font-weight: 600;
-            text-shadow: none;
-            box-shadow: var(--shadow-soft);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hud-element::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-        }
-        
-        /* Agent Status Bar */
-        .agent-status-bar {
-            position: absolute;
-            top: 24px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            background: var(--gradient-glass);
-            backdrop-filter: var(--backdrop-blur);
-            -webkit-backdrop-filter: var(--backdrop-blur);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 12px 20px;
-            box-shadow: var(--shadow-soft);
-            pointer-events: none;
-        }
-        
-        .status-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            position: relative;
-        }
-        
-        .agent-name {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--lodge-light);
-            opacity: 0.9;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-        
-        .last-report {
-            font-size: 10px;
-            color: var(--lodge-text-secondary);
-            font-family: 'JetBrains Mono', monospace;
-        }
-        
-        .status-indicator {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            position: absolute;
-            top: -2px;
-            right: -6px;
-        }
-        
-        .status-indicator.active {
-            background: #32cd32;
-            box-shadow: 0 0 8px rgba(50, 205, 50, 0.6);
-        }
-        
-        .status-indicator.away {
-            background: #ffa500;
-            box-shadow: 0 0 8px rgba(255, 165, 0, 0.6);
-        }
-        
-        .status-indicator.idle {
-            background: #888;
-            box-shadow: 0 0 8px rgba(136, 136, 136, 0.4);
-        }
-        
-        .unread-counter {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--lodge-accent);
-            color: white;
-            border-radius: 12px;
-            min-width: 24px;
-            height: 20px;
-            margin-left: 8px;
-            font-size: 11px;
-            font-weight: 700;
-            box-shadow: 0 2px 8px rgba(255, 140, 0, 0.4);
-        }
-        
-        @media (max-width: 768px) {
-            .agent-status-bar {
-                transform: translateX(-50%) scale(0.85);
-                gap: 12px;
-                padding: 8px 16px;
-            }
-            
-            .agent-name {
-                font-size: 10px;
-            }
-            
-            .last-report {
-                font-size: 9px;
-            }
-        }
-        
-        /* Enhanced Interaction Prompt */
-        #interaction-prompt {
-            position: absolute;
-            bottom: 120px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--gradient-glass);
-            backdrop-filter: var(--backdrop-blur);
-            -webkit-backdrop-filter: var(--backdrop-blur);
-            border: 1px solid var(--lodge-accent);
-            border-radius: 20px;
-            padding: 16px 32px;
-            font-size: 16px;
-            font-weight: 600;
-            text-align: center;
-            color: var(--lodge-accent);
-            display: none;
-            z-index: 1001;
-            box-shadow: 
-                var(--shadow-soft),
-                0 0 20px rgba(255, 140, 0, 0.3);
-            animation: pulseGlow 2s infinite;
-            letter-spacing: 0.5px;
-        }
-        
-        @keyframes pulseGlow {
-            0%, 100% { 
-                transform: translateX(-50%) scale(1);
-                box-shadow: 
-                    var(--shadow-soft),
-                    0 0 20px rgba(255, 140, 0, 0.3);
-            }
-            50% { 
-                transform: translateX(-50%) scale(1.05);
-                box-shadow: 
-                    var(--shadow-soft),
-                    0 0 30px rgba(255, 140, 0, 0.5);
-            }
-        }
-        
-        /* Overlay Panel */
-        #overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 2000;
-            display: none;
-        }
-        
-        #panel {
-            position: absolute;
-            right: -400px;
-            top: 0;
-            bottom: 0;
-            width: 400px;
-            background: linear-gradient(135deg, #3d2817, #4a3224);
-            border-left: 3px solid #8b4513;
-            transition: right 0.3s ease-in-out;
-            overflow-y: auto;
-            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
-        }
-        
-        #panel.open {
-            right: 0;
-        }
-        
-        .panel-header {
-            background: linear-gradient(135deg, #8b4513, #a0522d);
-            padding: 20px;
-            border-bottom: 2px solid #654321;
-            position: sticky;
-            top: 0;
-            z-index: 2001;
-        }
-        
-        .panel-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #e6d3a3;
-            margin: 0;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-        }
-        
-        .close-btn {
-            position: absolute;
-            right: 20px;
-            top: 20px;
-            background: none;
-            border: none;
-            color: #e6d3a3;
-            font-size: 24px;
-            cursor: pointer;
-            padding: 5px;
-            border-radius: 4px;
-            transition: background 0.2s;
-        }
-        
-        .close-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .panel-content {
-            padding: 20px;
-            color: #e6d3a3;
-            line-height: 1.6;
-        }
-        
-        /* Mobile Controls */
-        #mobile-controls {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 1500;
-            display: none;
-            pointer-events: none;
-        }
-        
-        #joystick-area {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            width: 120px;
-            height: 120px;
-            pointer-events: all;
-        }
-        
-        #interact-btn {
-            position: absolute;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: rgba(255, 140, 0, 0.9);
-            border: 3px solid #ff8c00;
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            pointer-events: all;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-        
-        #interact-btn:active {
-            transform: scale(0.9);
-            background: rgba(255, 140, 0, 1);
-        }
-        
-        /* Minimap */
-        #minimap {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            width: 180px;
-            height: 120px;
-            background: rgba(45, 24, 16, 0.9);
-            border: 2px solid #8b4513;
-            border-radius: 8px;
-            z-index: 1001;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            #panel {
-                width: 100vw;
-                right: -100vw;
-            }
-            
-            #mobile-controls {
-                display: block;
-            }
-            
-            #minimap {
-                width: 120px;
-                height: 80px;
-                bottom: 160px;
-            }
-        }
-        
-        /* Stats and data styling */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-        
-        .stat-card {
-            background: rgba(139, 69, 19, 0.3);
-            border: 1px solid #8b4513;
-            border-radius: 6px;
-            padding: 15px;
-            text-align: center;
-        }
-        
-        .stat-value {
-            font-size: 24px;
-            font-weight: bold;
-            color: #ff8c00;
-            display: block;
-        }
-        
-        .stat-label {
-            font-size: 12px;
-            color: #c4a374;
-            margin-top: 5px;
-        }
-        
-        .button-group {
-            display: flex;
-            gap: 10px;
-            margin: 20px 0;
-        }
-        
-        .lodge-btn {
-            flex: 1;
-            padding: 12px 20px;
-            background: linear-gradient(135deg, #8b4513, #a0522d);
-            border: 2px solid #654321;
-            border-radius: 6px;
-            color: #e6d3a3;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-transform: uppercase;
-            font-size: 14px;
-        }
-        
-        .lodge-btn:hover {
-            background: linear-gradient(135deg, #a0522d, #b8651f);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
-        
-        .team-member {
-            display: flex;
-            align-items: center;
-            margin: 15px 0;
-            padding: 12px;
-            background: rgba(139, 69, 19, 0.2);
-            border-radius: 6px;
-            border: 1px solid #654321;
-        }
-        
-        .member-status {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 12px;
-            flex-shrink: 0;
-        }
-        
-        .member-status.active { background: #32cd32; }
-        .member-status.away { background: #ffa500; }
-        .member-status.busy { background: #ff4444; }
-        
-        .member-info h4 {
-            margin: 0 0 4px 0;
-            color: #e6d3a3;
-            font-size: 16px;
-        }
-        
-        .member-role {
-            color: #c4a374;
-            font-size: 12px;
-            margin: 0;
-        }
-        
-        /* Report System Styles */
-        .tab-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            color: var(--lodge-text-secondary);
-            padding: 8px 16px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-        
-        .tab-btn.active, .tab-btn:hover {
-            background: var(--lodge-accent);
-            color: white;
-            border-color: var(--lodge-accent);
-        }
-        
-        .filter-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 6px;
-            color: var(--lodge-text-secondary);
-            padding: 4px 8px;
-            font-size: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            white-space: nowrap;
-            text-transform: uppercase;
-        }
-        
-        .filter-btn.active, .filter-btn:hover {
-            background: var(--lodge-accent);
-            color: white;
-            border-color: var(--lodge-accent);
-        }
-        
-        .report-item {
-            animation: slideIn 0.3s ease-out;
-        }
-        
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-    </style>
-    <script type="module" src="/src/main.js"></script>
+    <title>The Lodge — Built for Land. Built for War. Built for Legacy.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <script type="module" crossorigin src="/the-lodge/assets/index-BCMqSp_6.js"></script>
+  <link rel="stylesheet" crossorigin href="/the-lodge/assets/index-B1FuW9Uy.css">
 </head>
 <body>
-    <div id="game-container">
-        <!-- HUD -->
-        <div id="hud">
-            <div id="room-name" class="hud-element">Main Hall</div>
-            <div id="lodge-info" class="hud-element">
-                <div>The Lodge — Mathis Land Co</div>
-                <div id="clock" style="font-size: 12px; margin-top: 5px;">--:-- --</div>
+    <div id="app">
+        <!-- Lodge Header -->
+        <header class="lodge-header">
+            <div class="header-content">
+                <div class="lodge-title">
+                    <h1>THE LODGE</h1>
+                    <p class="tagline">BUILT FOR LAND. BUILT FOR WAR. BUILT FOR LEGACY.</p>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Net Worth</span>
+                        <span class="stat-value" id="net-worth">$0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Last Updated</span>
+                        <span class="stat-value" id="last-updated">--</span>
+                    </div>
+                </div>
             </div>
-        </div>
-        
-        <!-- Agent Status Bar -->
-        <div id="agent-status-bar" class="agent-status-bar">
-            <div class="status-item">
-                <span class="agent-name">Scout</span>
-                <span class="last-report">12m ago</span>
-                <div class="status-indicator active"></div>
+        </header>
+
+        <!-- Room Navigation -->
+        <nav class="room-navigation">
+            <div class="nav-container">
+                <button class="room-tab active" data-room="main-hall">
+                    <span class="room-icon">🏛️</span>
+                    <span class="room-name">Main Hall</span>
+                </button>
+                <button class="room-tab" data-room="war-room">
+                    <span class="room-icon">⚔️</span>
+                    <span class="room-name">War Room</span>
+                </button>
+                <button class="room-tab" data-room="treasury">
+                    <span class="room-icon">💰</span>
+                    <span class="room-name">Treasury</span>
+                </button>
+                <button class="room-tab" data-room="barracks">
+                    <span class="room-icon">🛡️</span>
+                    <span class="room-name">Barracks</span>
+                </button>
+                <button class="room-tab" data-room="training">
+                    <span class="room-icon">🏋️</span>
+                    <span class="room-name">Training</span>
+                </button>
+                <button class="room-tab" data-room="command">
+                    <span class="room-icon">📡</span>
+                    <span class="room-name">Command</span>
+                </button>
+                <button class="room-tab" data-room="watchtower">
+                    <span class="room-icon">👁️</span>
+                    <span class="room-name">Watchtower</span>
+                </button>
+                <button class="room-tab" data-room="library">
+                    <span class="room-icon">📚</span>
+                    <span class="room-name">Library</span>
+                </button>
+                <button class="room-tab" data-room="lounge">
+                    <span class="room-icon">🥃</span>
+                    <span class="room-name">Lounge</span>
+                </button>
             </div>
-            <div class="status-item">
-                <span class="agent-name">Builder</span>
-                <span class="last-report">1h ago</span>
-                <div class="status-indicator active"></div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="lodge-content">
+            <!-- Main Hall Room -->
+            <div class="room active" id="main-hall">
+                <div class="room-header">
+                    <h2>Morning Dashboard</h2>
+                </div>
+                <div class="room-grid main-hall-grid">
+                    <div class="panel net-worth-panel">
+                        <div class="panel-header">
+                            <h3>Net Worth</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div class="net-worth-display">
+                                <span class="amount" id="main-net-worth">$0</span>
+                                <div class="trend-chart">
+                                    <canvas id="net-worth-chart" width="200" height="60"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel briefing-panel">
+                        <div class="panel-header">
+                            <h3>Today's Briefing</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div class="briefing-content" id="briefing-content">
+                                <div class="loading-spinner"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel decision-queue-panel">
+                        <div class="panel-header">
+                            <h3>Decision Queue</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div class="decisions-list" id="decisions-list">
+                                <div class="loading-spinner"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel quick-stats-panel">
+                        <div class="panel-header">
+                            <h3>Quick Stats</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div class="stats-grid" id="quick-stats">
+                                <div class="loading-spinner"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel weather-panel">
+                        <div class="panel-header">
+                            <h3>Weather & Calendar</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div class="weather-calendar" id="weather-calendar">
+                                <div class="loading-spinner"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="status-item">
-                <span class="agent-name">Tim</span>
-                <span class="last-report">45m ago</span>
-                <div class="status-indicator away"></div>
+
+            <!-- War Room -->
+            <div class="room" id="war-room">
+                <div class="room-header">
+                    <h2>War Room</h2>
+                </div>
+                <div class="room-grid war-room-grid">
+                    <div class="panel projects-panel">
+                        <div class="panel-header">
+                            <h3>Active Projects</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div class="projects-list" id="projects-list">
+                                <div class="loading-spinner"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel market-pulse-panel">
+                        <div class="panel-header">
+                            <h3>Market Pulse</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div class="market-data" id="market-data">
+                                <div class="loading-spinner"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel pipeline-panel">
+                        <div class="panel-header">
+                            <h3>Lead Pipeline</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div class="pipeline-viz">
+                                <canvas id="pipeline-chart" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel news-panel">
+                        <div class="panel-header">
+                            <h3>Land & RE News</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div class="news-feed" id="news-feed">
+                                <div class="loading-spinner"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="status-item">
-                <span class="agent-name">Tracker</span>
-                <span class="last-report">2h ago</span>
-                <div class="status-indicator idle"></div>
+
+            <!-- Treasury Room -->
+            <div class="room" id="treasury">
+                <div class="room-header">
+                    <h2>Treasury</h2>
+                </div>
+                <div class="room-grid treasury-grid">
+                    <div class="panel accounts-panel">
+                        <div class="panel-header">
+                            <h3>Account Balances</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div class="accounts-list" id="accounts-list">
+                                <div class="loading-spinner"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel burn-rate-panel">
+                        <div class="panel-header">
+                            <h3>Burn Rate</h3>
+                        </div>
+                        <div class="panel-content">
+                            <canvas id="burn-chart" width="300" height="150"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="panel subscriptions-panel">
+                        <div class="panel-header">
+                            <h3>Subscriptions</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div class="subscriptions-list" id="subscriptions-list">
+                                <div class="loading-spinner"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel transactions-panel">
+                        <div class="panel-header">
+                            <h3>Recent Transactions</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div class="transactions-list" id="transactions-list">
+                                <div class="loading-spinner"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="unread-counter">
-                <span class="unread-count">7</span>
+
+            <!-- Barracks Room -->
+            <div class="room" id="barracks">
+                <div class="room-header">
+                    <h2>Barracks</h2>
+                </div>
+                <div class="room-grid barracks-grid">
+                    <div class="panel agents-panel">
+                        <div class="panel-header">
+                            <h3>Agent Status</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div class="agents-grid" id="agents-grid">
+                                <div class="loading-spinner"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel reports-panel">
+                        <div class="panel-header">
+                            <h3>Report Feed</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div class="reports-feed" id="reports-feed">
+                                <div class="loading-spinner"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel uptime-panel">
+                        <div class="panel-header">
+                            <h3>System Health</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div class="uptime-grid" id="uptime-grid">
+                                <div class="loading-spinner"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel changelog-panel">
+                        <div class="panel-header">
+                            <h3>Changelog</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div class="changelog-list" id="changelog-list">
+                                <div class="loading-spinner"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        
-        <!-- Interaction Prompt -->
-        <div id="interaction-prompt">Press E to interact</div>
-        
-        <!-- Minimap -->
-        <canvas id="minimap" width="180" height="120"></canvas>
-        
-        <!-- Mobile Controls -->
-        <div id="mobile-controls">
-            <div id="joystick-area"></div>
-            <button id="interact-btn">E</button>
-        </div>
+
+            <!-- Training Room -->
+            <div class="room" id="training">
+                <div class="room-header">
+                    <h2>Training Room</h2>
+                </div>
+                <div class="room-grid training-grid">
+                    <div class="panel workout-panel">
+                        <div class="panel-header">
+                            <h3>Today's Workout</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div class="workout-display" id="workout-display">
+                                <div class="loading-spinner"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel training-plan-panel">
+                        <div class="panel-header">
+                            <h3>Weekly Plan</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div class="training-schedule" id="training-schedule">
+                                <div class="loading-spinner"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel progress-panel">
+                        <div class="panel-header">
+                            <h3>Progress Charts</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div class="progress-charts">
+                                <canvas id="training-chart" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel recovery-panel">
+                        <div class="panel-header">
+                            <h3>Recovery Metrics</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div class="recovery-metrics" id="recovery-metrics">
+                                <div class="loading-spinner"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other Rooms (Command, Watchtower, Library, Lounge) -->
+            <div class="room" id="command">
+                <div class="room-header">
+                    <h2>Command Center</h2>
+                </div>
+                <div class="room-content">
+                    <div class="panel">
+                        <div class="panel-content">
+                            <p>Command Center features coming soon...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="room" id="watchtower">
+                <div class="room-header">
+                    <h2>Watchtower</h2>
+                </div>
+                <div class="room-content">
+                    <div class="panel">
+                        <div class="panel-content">
+                            <p>Watchtower monitoring coming soon...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="room" id="library">
+                <div class="room-header">
+                    <h2>Library</h2>
+                </div>
+                <div class="room-content">
+                    <div class="panel">
+                        <div class="panel-content">
+                            <p>Knowledge base coming soon...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="room" id="lounge">
+                <div class="room-header">
+                    <h2>Lounge</h2>
+                </div>
+                <div class="room-content">
+                    <div class="panel">
+                        <div class="panel-content">
+                            <p>Focus tools and music player coming soon...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
-    
-    <!-- Overlay Panel -->
-    <div id="overlay">
-        <div id="panel">
-            <div class="panel-header">
-                <h2 id="panel-title" class="panel-title">Room Panel</h2>
-                <button id="close-panel" class="close-btn">&times;</button>
-            </div>
-            <div id="panel-content" class="panel-content">
-                <!-- Content will be dynamically loaded -->
-            </div>
-        </div>
-    </div>
-    
+
 </body>
 </html>
