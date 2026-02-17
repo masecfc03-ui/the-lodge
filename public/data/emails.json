@@ -1,0 +1,106 @@
+{
+  "last_updated": "2026-02-16T23:56:00Z",
+  "update_frequency": "every_5_minutes",
+  
+  "integration_status": {
+    "gmail_api": "configured",
+    "last_sync": "2026-02-16T23:50:00Z",
+    "unread_count": 7,
+    "priority_unread": 3
+  },
+  
+  "priority_inbox": [
+    {
+      "id": "email_001",
+      "from": "Lead Response System",
+      "from_email": "noreply@landleads.com",
+      "subject": "URGENT: 3 Property Owners Responded",
+      "received": "2026-02-16T23:47:00Z",
+      "priority": "high",
+      "read": false,
+      "preview": "Multiple responses to Dallas County mailer campaign. 456 Oak Street owner wants to meet TODAY.",
+      "category": "lead_response",
+      "action_required": true
+    },
+    {
+      "id": "email_002", 
+      "from": "County Records Alert",
+      "from_email": "alerts@recordtracking.com",
+      "subject": "New Foreclosure Filings - Ellis County",
+      "received": "2026-02-16T21:30:00Z",
+      "priority": "high",
+      "read": false,
+      "preview": "12 new pre-foreclosure properties match your criteria. Average equity: $67K.",
+      "category": "market_intelligence",
+      "action_required": true
+    },
+    {
+      "id": "email_003",
+      "from": "John Martinez", 
+      "from_email": "j.martinez@email.com",
+      "subject": "RE: 456 Pine Street Property Inquiry",
+      "received": "2026-02-16T17:15:00Z",
+      "priority": "high",
+      "read": false,
+      "preview": "Yes, I am interested in selling. Can we meet this week? Property has been in family for 20 years.",
+      "category": "seller_response",
+      "action_required": true
+    },
+    {
+      "id": "email_004",
+      "from": "OpenAI Billing",
+      "from_email": "billing@openai.com", 
+      "subject": "Usage Alert: 80% of Monthly Limit",
+      "received": "2026-02-16T20:00:00Z",
+      "priority": "medium",
+      "read": true,
+      "preview": "Your API usage is approaching the monthly limit. Current usage: $68 of $85 monthly budget.",
+      "category": "billing",
+      "action_required": false
+    }
+  ],
+  
+  "categories": {
+    "lead_response": {
+      "count": 3,
+      "unread": 3,
+      "priority": "high"
+    },
+    "seller_response": {
+      "count": 2,
+      "unread": 1,
+      "priority": "high"
+    },
+    "market_intelligence": {
+      "count": 1,
+      "unread": 1,
+      "priority": "high"
+    },
+    "billing": {
+      "count": 1,
+      "unread": 0,
+      "priority": "medium"
+    },
+    "system": {
+      "count": 0,
+      "unread": 0,
+      "priority": "low"
+    }
+  },
+  
+  "filters": {
+    "high_priority_keywords": ["urgent", "response", "interested", "foreclosure", "motivated seller"],
+    "auto_categorize_rules": {
+      "lead_response": ["lead", "response", "mailer", "campaign"],
+      "seller_response": ["interested", "selling", "property", "meet"],
+      "market_intelligence": ["foreclosure", "market", "filings", "records"]
+    }
+  },
+  
+  "gmail_integration": {
+    "api_endpoint": "https://www.googleapis.com/gmail/v1/users/me/messages",
+    "auth_required": true,
+    "scope": "https://www.googleapis.com/auth/gmail.readonly",
+    "rate_limit": "250_requests_per_user_per_second"
+  }
+}

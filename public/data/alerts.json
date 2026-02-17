@@ -1,0 +1,149 @@
+{
+  "last_updated": "2026-02-16T23:56:00Z",
+  "update_frequency": "real_time",
+  
+  "critical_alerts": [
+    {
+      "id": "alert_001",
+      "title": "Property Owner Response URGENT",
+      "message": "456 Oak Street - Owner wants to meet TODAY",
+      "priority": "critical",
+      "category": "opportunity",
+      "created": "2026-02-16T23:47:00Z",
+      "action_required": true,
+      "estimated_value": 45000,
+      "deadline": "2026-02-17T18:00:00Z"
+    },
+    {
+      "id": "alert_002", 
+      "title": "API Usage Alert",
+      "message": "OpenAI usage at 85% - billing cycle ends in 3 days",
+      "priority": "high",
+      "category": "cost_management",
+      "created": "2026-02-16T20:00:00Z",
+      "action_required": false,
+      "current_spend": 68,
+      "budget_limit": 85
+    }
+  ],
+  
+  "system_status": {
+    "overall_health": "operational",
+    "components": [
+      {
+        "name": "Lead Processing Engine",
+        "status": "healthy",
+        "uptime": 99.2,
+        "last_check": "2026-02-16T23:55:00Z"
+      },
+      {
+        "name": "Email Campaign System", 
+        "status": "healthy",
+        "delivery_rate": 89,
+        "last_check": "2026-02-16T23:50:00Z"
+      },
+      {
+        "name": "Data Pipeline",
+        "status": "healthy",
+        "processing_speed": "23% faster",
+        "last_check": "2026-02-16T23:45:00Z"
+      },
+      {
+        "name": "Market Data Feed",
+        "status": "healthy",
+        "last_update": "2026-02-16T23:30:00Z",
+        "sources_active": 4
+      }
+    ]
+  },
+  
+  "agent_status": [
+    {
+      "agent": "Scout",
+      "status": "online",
+      "last_report": "2026-02-16T23:45:00Z",
+      "performance": "47 leads found today",
+      "health": "optimal"
+    },
+    {
+      "agent": "Builder",
+      "status": "online", 
+      "last_report": "2026-02-16T23:30:00Z",
+      "performance": "Lodge v2.1 deployed successfully",
+      "health": "optimal"
+    },
+    {
+      "agent": "Tim",
+      "status": "online",
+      "last_report": "2026-02-16T22:15:00Z",
+      "performance": "8 calls, 3 appointments booked",
+      "health": "optimal"
+    },
+    {
+      "agent": "Tracker", 
+      "status": "online",
+      "last_report": "2026-02-16T21:45:00Z",
+      "performance": "Market analysis complete",
+      "health": "optimal"
+    }
+  ],
+  
+  "market_alerts": [
+    {
+      "id": "market_001",
+      "title": "Construction Costs Down 8%",
+      "message": "Lumber futures drop creates development opportunity",
+      "impact": "positive",
+      "category": "cost_opportunity",
+      "relevance": "high"
+    },
+    {
+      "id": "market_002",
+      "title": "Interest Rate Stability Expected",
+      "message": "Fed signals pause - mortgage rates may stabilize",
+      "impact": "positive", 
+      "category": "financing",
+      "relevance": "high"
+    }
+  ],
+  
+  "monitoring_feeds": [
+    {
+      "name": "Property Alert System",
+      "status": "monitoring", 
+      "alerts_24h": 23,
+      "high_priority": 3
+    },
+    {
+      "name": "Competition Tracker",
+      "status": "monitoring",
+      "competitors_tracked": 12,
+      "new_activity": 5
+    },
+    {
+      "name": "Market Intelligence",
+      "status": "monitoring",
+      "data_points": 847,
+      "anomalies_detected": 2
+    }
+  ],
+  
+  "contact_tracking": {
+    "key_contacts": [
+      {
+        "name": "John Martinez",
+        "property": "456 Pine Street", 
+        "last_contact": "2026-02-16T17:15:00Z",
+        "next_action": "Schedule meeting",
+        "priority": "urgent"
+      },
+      {
+        "name": "Sarah Johnson",
+        "property": "789 Oak Avenue",
+        "last_contact": "2026-02-15T14:30:00Z", 
+        "next_action": "Follow-up call",
+        "priority": "high"
+      }
+    ]
+  }
+}

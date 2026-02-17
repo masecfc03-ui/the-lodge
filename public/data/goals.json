@@ -1,0 +1,164 @@
+{
+  "last_updated": "2026-02-16T23:56:00Z",
+  "update_frequency": "weekly",
+  
+  "period": {
+    "start_date": "2026-01-01",
+    "end_date": "2026-03-31", 
+    "days_total": 90,
+    "days_elapsed": 47,
+    "days_remaining": 43,
+    "completion_percentage": 52.2
+  },
+  
+  "business_goals": [
+    {
+      "id": "biz_001",
+      "category": "revenue",
+      "title": "Close $750K in Land Deals",
+      "target": 750000,
+      "current": 180000,
+      "progress": 24.0,
+      "unit": "dollars",
+      "priority": "high",
+      "deadline": "2026-03-31",
+      "milestones": [
+        {
+          "title": "First $250K",
+          "target_date": "2026-01-31",
+          "status": "missed",
+          "actual_date": "2026-02-08"
+        },
+        {
+          "title": "Second $250K", 
+          "target_date": "2026-02-29",
+          "status": "in_progress",
+          "current_value": 180000
+        },
+        {
+          "title": "Final $250K",
+          "target_date": "2026-03-31", 
+          "status": "pending"
+        }
+      ],
+      "current_pipeline": 485000,
+      "confidence": "medium"
+    },
+    {
+      "id": "biz_002",
+      "category": "operations",
+      "title": "Build Verified Cash Buyer List to 100",
+      "target": 100,
+      "current": 47,
+      "progress": 47.0,
+      "unit": "contacts",
+      "priority": "high",
+      "deadline": "2026-03-31",
+      "weekly_target": 4,
+      "recent_additions": 8,
+      "confidence": "high"
+    },
+    {
+      "id": "biz_003",
+      "category": "marketing",
+      "title": "Generate 5,000 Quality Leads",
+      "target": 5000,
+      "current": 8056,
+      "progress": 161.1,
+      "unit": "leads",
+      "priority": "medium",
+      "deadline": "2026-03-31",
+      "status": "exceeded",
+      "confidence": "achieved"
+    }
+  ],
+  
+  "personal_goals": [
+    {
+      "id": "personal_001",
+      "category": "fitness",
+      "title": "Complete Ironman 70.3 Texas",
+      "target": 1,
+      "current": 0,
+      "progress": 40.0,
+      "unit": "race",
+      "priority": "high",
+      "deadline": "2026-07-20",
+      "training_progress": {
+        "weeks_completed": 8,
+        "total_weeks": 20,
+        "weekly_compliance": 85.7,
+        "current_phase": "Base Building"
+      },
+      "confidence": "high"
+    },
+    {
+      "id": "personal_002", 
+      "category": "skills",
+      "title": "Master AI-Powered Business Intelligence",
+      "target": 100,
+      "current": 75,
+      "progress": 75.0,
+      "unit": "skill_level",
+      "priority": "medium",
+      "deadline": "2026-03-31",
+      "recent_improvements": [
+        "Lodge v2.1 real-time data integration",
+        "Automated agent reporting system",
+        "Market intelligence dashboard"
+      ],
+      "confidence": "high"
+    }
+  ],
+  
+  "systems_goals": [
+    {
+      "id": "sys_001", 
+      "category": "automation",
+      "title": "Achieve 90% Process Automation", 
+      "target": 90,
+      "current": 67,
+      "progress": 74.4,
+      "unit": "percentage",
+      "priority": "high",
+      "deadline": "2026-03-31",
+      "automated_processes": [
+        "Lead scoring and filtering",
+        "Market data collection", 
+        "Agent report generation",
+        "Email campaign management"
+      ],
+      "remaining_processes": [
+        "SMS follow-up sequences",
+        "Contract generation",
+        "Closing coordination"
+      ],
+      "confidence": "medium"
+    }
+  ],
+  
+  "weekly_targets": {
+    "week_of_2026_02_16": {
+      "deals_to_close": 1,
+      "new_leads_target": 150,
+      "cash_buyers_to_add": 4,
+      "training_hours": 8.5,
+      "system_improvements": 2
+    }
+  },
+  
+  "progress_summary": {
+    "on_track": 4,
+    "ahead_of_schedule": 1,
+    "behind_schedule": 1,
+    "at_risk": 1,
+    "overall_health": "strong"
+  },
+  
+  "key_metrics": {
+    "revenue_run_rate": 540000,
+    "lead_generation_velocity": 156,
+    "system_efficiency": 89.2,
+    "goal_completion_rate": 66.7
+  }
+}

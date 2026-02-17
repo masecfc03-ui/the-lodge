@@ -1,0 +1,123 @@
+{
+  "last_updated": "2026-02-17T01:01:29.652Z",
+  "update_frequency": "every_15_minutes",
+  "date_info": {
+    "current_date": "Monday, February 16, 2026",
+    "timezone": "America/Chicago",
+    "week_number": 8,
+    "quarter": 1
+  },
+  "weather": {
+    "location": "Kaufman, TX",
+    "current": {
+      "temperature": 72,
+      "condition": "Partly Cloudy",
+      "humidity": 68,
+      "wind_speed": 8,
+      "wind_direction": "SW",
+      "visibility": 10,
+      "uv_index": 6
+    },
+    "forecast_today": {
+      "high": 78,
+      "low": 56,
+      "chance_of_rain": 20,
+      "condition": "Mostly Sunny"
+    },
+    "forecast_3day": [
+      {
+        "day": "Tomorrow",
+        "high": 81,
+        "low": 59,
+        "condition": "Sunny",
+        "rain": 0
+      },
+      {
+        "day": "Wednesday",
+        "high": 75,
+        "low": 62,
+        "condition": "Scattered Storms",
+        "rain": 60
+      },
+      {
+        "day": "Thursday",
+        "high": 70,
+        "low": 55,
+        "condition": "Cloudy",
+        "rain": 30
+      }
+    ]
+  },
+  "financial_snapshot": {
+    "cash_position": {
+      "chase_checking": 2847.23,
+      "kalshi_balance": 125.73,
+      "business_savings": 1250,
+      "total_liquid": 4222.96
+    },
+    "daily_change": 45.32,
+    "monthly_burn": 1247,
+    "next_major_expense": {
+      "description": "OpenAI API",
+      "amount": 85,
+      "due_date": "2026-02-20"
+    }
+  },
+  "decision_queue": [
+    {
+      "id": 1,
+      "title": "456 Oak Street - Owner Response",
+      "priority": "urgent",
+      "deadline": "today",
+      "description": "Property owner wants to meet today. Schedule showing?",
+      "potential_value": 45000
+    },
+    {
+      "id": 2,
+      "title": "Ellis County Mailer Campaign Results",
+      "priority": "high",
+      "deadline": "this_week",
+      "description": "23 responses from 2,847 mailers. Review and prioritize.",
+      "roi": 3.2
+    },
+    {
+      "id": 3,
+      "title": "Kalshi Position Review",
+      "priority": "medium",
+      "deadline": "this_week",
+      "description": "Fed rate position down 8%. Hold or close?",
+      "amount_at_risk": 45
+    }
+  ],
+  "quick_stats": {
+    "new_leads_today": 12,
+    "unread_emails": 7,
+    "calendar_items_today": 4,
+    "workout_completed": true,
+    "pipeline_deals": 23,
+    "hot_prospects": 5
+  },
+  "alerts": [
+    {
+      "type": "opportunity",
+      "message": "3 high-value properties flagged in Kaufman County",
+      "action_required": true
+    },
+    {
+      "type": "market",
+      "message": "Construction costs down 8% - good time for development deals",
+      "action_required": false
+    },
+    {
+      "type": "system",
+      "message": "All agents reporting normal operations",
+      "action_required": false
+    }
+  ],
+  "priorities": [
+    "📞 Call 456 Oak Street owner - URGENT",
+    "📧 Review Ellis County campaign responses",
+    "🏊‍♂️ Complete swim training (45 min)",
+    "📊 Weekly team standup at 4 PM"
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "last_updated": "2026-02-16T23:56:00Z",
+  "update_frequency": "daily",
+  
+  "account_balances": {
+    "chase_checking": {
+      "balance": 2847.23,
+      "account_type": "checking",
+      "last_updated": "2026-02-16T18:30:00Z"
+    },
+    "kalshi_trading": {
+      "balance": 125.73,
+      "account_type": "investment",
+      "unrealized_pnl": -12.45,
+      "realized_pnl": 38.18
+    },
+    "business_savings": {
+      "balance": 1250.00,
+      "account_type": "savings",
+      "apy": 0.045
+    }
+  },
+  
+  "budget_tracking": {
+    "february_2026": {
+      "ai_software": {
+        "budgeted": 200,
+        "actual": 170,
+        "remaining": 30,
+        "percentage": 85
+      },
+      "marketing": {
+        "budgeted": 150,
+        "actual": 65,
+        "remaining": 85,
+        "percentage": 43
+      },
+      "infrastructure": {
+        "budgeted": 75,
+        "actual": 50,
+        "remaining": 25,
+        "percentage": 67
+      },
+      "training_health": {
+        "budgeted": 100,
+        "actual": 125,
+        "remaining": -25,
+        "percentage": 125
+      }
+    }
+  },
+  
+  "subscriptions": [
+    {
+      "service": "OpenAI API",
+      "amount": 85,
+      "frequency": "monthly",
+      "next_charge": "2026-02-20",
+      "status": "active"
+    },
+    {
+      "service": "Anthropic Claude",
+      "amount": 65,
+      "frequency": "monthly", 
+      "next_charge": "2026-02-23",
+      "status": "active"
+    },
+    {
+      "service": "Digital Ocean",
+      "amount": 20,
+      "frequency": "monthly",
+      "next_charge": "2026-02-28",
+      "status": "active"
+    }
+  ],
+  
+  "recent_transactions": [
+    {
+      "date": "2026-02-16T16:00:00Z",
+      "description": "OpenAI API Usage",
+      "amount": -23.47,
+      "category": "AI/Tools",
+      "account": "chase_checking"
+    },
+    {
+      "date": "2026-02-15T14:30:00Z",
+      "description": "Facebook Ads - Lead Gen", 
+      "amount": -15.00,
+      "category": "Marketing",
+      "account": "chase_checking"
+    },
+    {
+      "date": "2026-02-15T10:15:00Z",
+      "description": "Kalshi Position Close",
+      "amount": 125.00,
+      "category": "Trading",
+      "account": "kalshi_trading"
+    }
+  ],
+  
+  "cash_flow_30_days": {
+    "total_inflow": 245.32,
+    "total_outflow": -220.18,
+    "net_flow": 25.14,
+    "projected_monthly_burn": 847
+  },
+  
+  "deal_financing": {
+    "current_rates": {
+      "hard_money": 0.12,
+      "private_lending": 0.085,
+      "conventional": 0.068
+    },
+    "buyer_capacity": {
+      "at_current_rates": {
+        "median_buyer_max": 425000,
+        "cash_buyer_percentage": 0.23
+      }
+    }
+  },
+  
+  "cost_tracking": {
+    "cost_per_lead": 15.23,
+    "customer_acquisition_cost": 847,
+    "lifetime_value": 45000,
+    "roi_land_deals": 2.8
+  }
+}

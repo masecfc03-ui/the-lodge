@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { GameScene } from './game.js';
-import { UI } from './ui.js';
+import { UI } from './ui-enhanced-complete.js';
 
 // Detect mobile devices
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 

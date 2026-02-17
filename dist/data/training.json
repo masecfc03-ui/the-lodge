@@ -1,0 +1,141 @@
+{
+  "last_updated": "2026-02-16T23:56:00Z",
+  "update_frequency": "daily",
+  
+  "race_info": {
+    "event": "Ironman 70.3 Texas",
+    "date": "2026-07-20",
+    "location": "Galveston, TX",
+    "days_remaining": 154,
+    "weeks_remaining": 22
+  },
+  
+  "training_plan": {
+    "plan_name": "70.3 Build Phase",
+    "current_week": 8,
+    "total_weeks": 20,
+    "phase": "Base Building",
+    "next_phase": "Build Phase",
+    "weekly_hours_target": 8.5
+  },
+  
+  "this_week_plan": [
+    {
+      "day": "Monday",
+      "workout": "Swimming - Endurance Base",
+      "duration": "45 min",
+      "target_distance": "2000m",
+      "target_pace": "1:35/100m",
+      "status": "scheduled",
+      "notes": "Zone 2 aerobic base building"
+    },
+    {
+      "day": "Tuesday", 
+      "workout": "Running - Intervals",
+      "duration": "60 min",
+      "target_distance": "8 km",
+      "target_pace": "5:15/km",
+      "status": "scheduled",
+      "notes": "4x1000m at threshold"
+    },
+    {
+      "day": "Wednesday",
+      "workout": "Cycling - Endurance",
+      "duration": "90 min", 
+      "target_distance": "45 km",
+      "target_power": "Zone 2",
+      "status": "scheduled",
+      "notes": "Steady aerobic effort"
+    },
+    {
+      "day": "Thursday",
+      "workout": "Swimming - Speed",
+      "duration": "45 min",
+      "target_distance": "1800m",
+      "target_pace": "1:25/100m",
+      "status": "scheduled", 
+      "notes": "6x100m at race pace"
+    },
+    {
+      "day": "Friday",
+      "workout": "Brick Training",
+      "duration": "75 min",
+      "target": "30km bike + 5km run",
+      "status": "scheduled",
+      "notes": "Race simulation"
+    },
+    {
+      "day": "Saturday",
+      "workout": "Long Run",
+      "duration": "120 min",
+      "target_distance": "18 km", 
+      "target_pace": "5:45/km",
+      "status": "scheduled",
+      "notes": "Steady aerobic pace"
+    },
+    {
+      "day": "Sunday",
+      "workout": "Recovery/Yoga",
+      "duration": "30 min",
+      "status": "scheduled",
+      "notes": "Active recovery"
+    }
+  ],
+  
+  "recent_workouts": [
+    {
+      "date": "2026-02-16",
+      "type": "Swimming",
+      "distance": "2000m", 
+      "time": "31:45",
+      "avg_pace": "1:35/100m",
+      "avg_hr": 142,
+      "quality": "excellent",
+      "notes": "Felt strong throughout"
+    },
+    {
+      "date": "2026-02-15",
+      "type": "Running",
+      "distance": "8.2 km",
+      "time": "42:15",
+      "avg_pace": "5:09/km",
+      "avg_hr": 156,
+      "quality": "good",
+      "notes": "Intervals felt smooth"
+    },
+    {
+      "date": "2026-02-14",
+      "type": "Cycling", 
+      "distance": "45 km",
+      "time": "1:38:22",
+      "avg_power": 185,
+      "avg_hr": 148,
+      "quality": "good",
+      "notes": "Good endurance session"
+    }
+  ],
+  
+  "progress_metrics": {
+    "workouts_this_month": 12,
+    "workouts_planned": 14,
+    "compliance_rate": 0.857,
+    "total_hours_this_month": 18.5,
+    "weekly_volume_avg": 8.2,
+    "fitness_trend": "improving"
+  },
+  
+  "performance_tracking": {
+    "swim_100m_pace": "1:35",
+    "run_5k_pace": "5:10/km", 
+    "bike_ftp": 185,
+    "resting_hr": 52,
+    "max_hr_estimate": 188
+  },
+  
+  "integration_notes": {
+    "garmin_api": "Available for auto-sync of workout data",
+    "strava_api": "Available for social features and segment tracking",
+    "training_peaks": "Available for advanced analytics",
+    "manual_log": "Backup option for quick workout entry"
+  }
+}

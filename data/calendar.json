@@ -1,0 +1,125 @@
+{
+  "last_updated": "2026-02-16T23:56:00Z", 
+  "update_frequency": "every_15_minutes",
+  
+  "integration_status": {
+    "google_calendar_api": "configured",
+    "last_sync": "2026-02-16T23:45:00Z",
+    "calendars_synced": ["primary", "business", "training"],
+    "events_today": 4
+  },
+  
+  "today_events": [
+    {
+      "id": "event_001",
+      "title": "Swimming Training",
+      "start": "2026-02-17T09:00:00Z",
+      "end": "2026-02-17T09:45:00Z",
+      "calendar": "training",
+      "type": "workout",
+      "location": "Local Pool",
+      "description": "Endurance base - 2000m target",
+      "priority": "high"
+    },
+    {
+      "id": "event_002",
+      "title": "Property Walk-through - 123 Oak St",
+      "start": "2026-02-17T16:30:00Z",
+      "end": "2026-02-17T17:30:00Z", 
+      "calendar": "business",
+      "type": "property_showing",
+      "location": "123 Oak Street, Kaufman, TX",
+      "description": "Initial property assessment with motivated seller",
+      "priority": "urgent",
+      "attendees": ["John Martinez"]
+    },
+    {
+      "id": "event_003", 
+      "title": "Seller Call - Martinez Property",
+      "start": "2026-02-17T20:00:00Z",
+      "end": "2026-02-17T20:30:00Z",
+      "calendar": "business",
+      "type": "phone_call",
+      "description": "Follow-up on 456 Pine Street inquiry",
+      "priority": "high",
+      "phone": "+1-555-0123"
+    },
+    {
+      "id": "event_004",
+      "title": "Weekly Team Standup",
+      "start": "2026-02-17T22:00:00Z", 
+      "end": "2026-02-17T22:30:00Z",
+      "calendar": "business",
+      "type": "meeting",
+      "description": "Review week progress, pipeline updates",
+      "priority": "medium",
+      "attendees": ["Team"]
+    }
+  ],
+  
+  "week_preview": [
+    {
+      "date": "2026-02-18",
+      "day": "Tuesday",
+      "event_count": 2,
+      "highlight": "Running Intervals Training"
+    },
+    {
+      "date": "2026-02-19", 
+      "day": "Wednesday",
+      "event_count": 4,
+      "highlight": "3 Property Showings + Cycling Training"
+    },
+    {
+      "date": "2026-02-20",
+      "day": "Thursday", 
+      "event_count": 1,
+      "highlight": "Swimming Speed Work"
+    },
+    {
+      "date": "2026-02-21",
+      "day": "Friday",
+      "event_count": 3,
+      "highlight": "Brick Training + Contract Reviews"
+    }
+  ],
+  
+  "upcoming_deadlines": [
+    {
+      "title": "Fed Rate Decision Impact Analysis",
+      "due_date": "2026-03-18",
+      "days_remaining": 30,
+      "priority": "high",
+      "category": "market_research"
+    },
+    {
+      "title": "Q1 Pipeline Review",
+      "due_date": "2026-03-31", 
+      "days_remaining": 43,
+      "priority": "medium",
+      "category": "business_review"
+    },
+    {
+      "title": "Ironman 70.3 Texas",
+      "due_date": "2026-07-20",
+      "days_remaining": 154,
+      "priority": "personal",
+      "category": "race_event"
+    }
+  ],
+  
+  "scheduling_preferences": {
+    "work_hours_start": "08:00",
+    "work_hours_end": "18:00", 
+    "workout_preferred_times": ["06:00-08:00", "17:00-19:00"],
+    "no_meetings_during": ["12:00-13:00"],
+    "timezone": "America/Chicago"
+  },
+  
+  "google_calendar_integration": {
+    "api_endpoint": "https://www.googleapis.com/calendar/v3/calendars",
+    "auth_required": true,
+    "scope": "https://www.googleapis.com/auth/calendar.readonly",
+    "rate_limit": "1000_requests_per_100_seconds_per_user"
+  }
+}
