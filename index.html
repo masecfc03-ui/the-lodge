@@ -87,7 +87,8 @@
             <!-- Main Hall Room -->
             <div class="room active" id="main-hall">
                 <div class="room-header">
-                    <h2>Morning Dashboard</h2>
+                    <h2>Morning Briefing</h2>
+                    <div class="briefing-greeting" id="briefing-greeting">Good morning, Mason</div>
                     <div class="room-timestamp" id="room-timestamp">Last updated: --</div>
                 </div>
                 
@@ -97,92 +98,52 @@
                 </div>
 
                 <div class="main-hall-container">
-                    <!-- Top Row - The Numbers -->
-                    <div class="top-numbers-section">
-                        <div class="panel net-worth-panel">
+                    <!-- Top Row - Streaks & Momentum -->
+                    <div class="momentum-section">
+                        <div class="panel streak-panel">
                             <div class="panel-header">
-                                <h3>Net Worth</h3>
-                                <div class="panel-header-actions">
-                                    <button class="trend-toggle" data-period="30d">30D</button>
-                                    <button class="trend-toggle active" data-period="90d">90D</button>
-                                    <button class="trend-toggle" data-period="1y">1Y</button>
-                                </div>
+                                <h3>Streaks & Momentum</h3>
                             </div>
                             <div class="panel-content">
-                                <div class="net-worth-display">
-                                    <span class="amount" id="main-net-worth">$0</span>
-                                    <div class="trend-indicator" id="net-worth-trend">
-                                        <span class="trend-arrow">↑</span>
-                                        <span class="trend-percent">+2.3%</span>
-                                    </div>
-                                </div>
-                                <div class="trend-chart">
-                                    <canvas id="net-worth-chart" width="300" height="80"></canvas>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="panel bank-balances-panel">
-                            <div class="panel-header">
-                                <h3>Bank Balances</h3>
-                            </div>
-                            <div class="panel-content">
-                                <div class="balances-list" id="balances-list">
+                                <div class="streaks-display" id="streaks-display">
                                     <div class="loading-spinner"></div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="panel burn-rate-panel">
+                        <div class="panel quick-actions-panel">
                             <div class="panel-header">
-                                <h3>Monthly Burn</h3>
+                                <h3>Quick Actions</h3>
                             </div>
                             <div class="panel-content">
-                                <div class="burn-rate-display" id="burn-rate-display">
-                                    <div class="loading-spinner"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="panel revenue-panel">
-                            <div class="panel-header">
-                                <h3>Revenue This Month</h3>
-                            </div>
-                            <div class="panel-content">
-                                <div class="revenue-display" id="revenue-display">
+                                <div class="quick-actions-list" id="quick-actions-list">
                                     <div class="loading-spinner"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Main Content Grid -->
-                    <div class="main-hall-grid">
-                        <!-- Column 1 - Critical Actions -->
-                        <div class="column-1">
-                            <div class="panel decision-queue-panel">
+                    <!-- Morning Briefing Grid -->
+                    <div class="briefing-grid">
+                        <!-- Column 1 - Today's Game Plan -->
+                        <div class="briefing-column-1">
+                            <div class="panel game-plan-panel">
                                 <div class="panel-header">
-                                    <h3>Decision Queue</h3>
-                                    <div class="queue-count" id="queue-count">0</div>
+                                    <h3>🎯 Today's Game Plan</h3>
                                 </div>
                                 <div class="panel-content">
-                                    <div class="decisions-list" id="decisions-list">
+                                    <div class="today-tasks" id="today-tasks">
                                         <div class="loading-spinner"></div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="panel alerts-panel">
+                            <div class="panel smart-suggestions-panel">
                                 <div class="panel-header">
-                                    <h3>Alerts</h3>
-                                    <div class="alerts-filter">
-                                        <button class="alert-filter-btn active" data-priority="all">All</button>
-                                        <button class="alert-filter-btn" data-priority="urgent">Urgent</button>
-                                        <button class="alert-filter-btn" data-priority="high">High</button>
-                                    </div>
+                                    <h3>🧠 Smart Suggestions</h3>
                                 </div>
                                 <div class="panel-content">
-                                    <div class="alerts-list" id="alerts-list">
+                                    <div class="suggestions-list" id="suggestions-list">
                                         <div class="loading-spinner"></div>
                                     </div>
                                 </div>
@@ -190,56 +151,24 @@
                         </div>
 
                         <!-- Column 2 - Schedule & Communication -->
-                        <div class="column-2">
-                            <div class="panel calendar-panel">
+                        <div class="briefing-column-2">
+                            <div class="panel briefing-calendar-panel">
                                 <div class="panel-header">
-                                    <h3>Today & This Week</h3>
-                                    <div class="calendar-nav">
-                                        <button class="calendar-nav-btn" id="prev-day">‹</button>
-                                        <span class="current-date" id="current-date">Today</span>
-                                        <button class="calendar-nav-btn" id="next-day">›</button>
-                                    </div>
+                                    <h3>📅 Today & This Week</h3>
                                 </div>
                                 <div class="panel-content">
-                                    <div class="calendar-content" id="calendar-content">
+                                    <div class="briefing-calendar" id="briefing-calendar">
                                         <div class="loading-spinner"></div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="panel emails-panel">
+                            <div class="panel briefing-emails-panel">
                                 <div class="panel-header">
-                                    <h3>Priority Emails</h3>
-                                    <div class="unread-count" id="unread-count">0</div>
+                                    <h3>📧 Priority Emails</h3>
                                 </div>
                                 <div class="panel-content">
-                                    <div class="emails-list" id="emails-list">
-                                        <div class="loading-spinner"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Column 3 - Operations & Performance -->
-                        <div class="column-3">
-                            <div class="panel pipeline-panel">
-                                <div class="panel-header">
-                                    <h3>Pipeline Snapshot</h3>
-                                </div>
-                                <div class="panel-content">
-                                    <div class="pipeline-stats" id="pipeline-stats">
-                                        <div class="loading-spinner"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="panel training-panel">
-                                <div class="panel-header">
-                                    <h3>Today's Workout</h3>
-                                    <button class="log-workout-btn" id="log-workout">Log</button>
-                                </div>
-                                <div class="panel-content">
-                                    <div class="training-display" id="training-display">
+                                    <div class="priority-emails" id="priority-emails">
                                         <div class="loading-spinner"></div>
                                     </div>
                                 </div>
@@ -247,7 +176,7 @@
 
                             <div class="panel weather-panel">
                                 <div class="panel-header">
-                                    <h3>Weather - DFW</h3>
+                                    <h3>🌤️ Weather - DFW</h3>
                                 </div>
                                 <div class="panel-content">
                                     <div class="weather-display" id="weather-display">
@@ -257,34 +186,78 @@
                             </div>
                         </div>
 
-                        <!-- Column 4 - Intelligence -->
-                        <div class="column-4">
-                            <div class="panel news-panel">
+                        <!-- Column 3 - Operations & Training -->
+                        <div class="briefing-column-3">
+                            <div class="panel briefing-pipeline-panel">
                                 <div class="panel-header">
-                                    <h3>News Headlines</h3>
-                                    <div class="news-filter">
-                                        <button class="news-filter-btn active" data-category="all">All</button>
-                                        <button class="news-filter-btn" data-category="land">Land</button>
-                                        <button class="news-filter-btn" data-category="rates">Rates</button>
-                                    </div>
+                                    <h3>📊 Pipeline Snapshot</h3>
                                 </div>
                                 <div class="panel-content">
-                                    <div class="news-list" id="news-list">
+                                    <div class="pipeline-compact" id="pipeline-compact">
                                         <div class="loading-spinner"></div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="panel quick-stats-panel">
+                            <div class="panel briefing-training-panel">
                                 <div class="panel-header">
-                                    <h3>Quick Stats</h3>
+                                    <h3>💪 Today's Training</h3>
                                 </div>
                                 <div class="panel-content">
-                                    <div class="stats-grid" id="quick-stats">
+                                    <div class="training-brief" id="training-brief">
                                         <div class="loading-spinner"></div>
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="panel alerts-panel">
+                                <div class="panel-header">
+                                    <h3>🚨 Alerts</h3>
+                                </div>
+                                <div class="panel-content">
+                                    <div class="alerts-list" id="alerts-list">
+                                        <div class="loading-spinner"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Column 4 - Strategic View -->
+                        <div class="briefing-column-4">
+                            <div class="panel weekly-overview-panel">
+                                <div class="panel-header">
+                                    <h3>📋 This Week Overview</h3>
+                                </div>
+                                <div class="panel-content">
+                                    <div class="weekly-overview" id="weekly-overview">
+                                        <div class="loading-spinner"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel horizon-panel">
+                                <div class="panel-header">
+                                    <h3>🔭 3-Week Horizon</h3>
+                                </div>
+                                <div class="panel-content">
+                                    <div class="horizon-view" id="horizon-view">
+                                        <div class="loading-spinner"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel news-panel">
+                                <div class="panel-header">
+                                    <h3>📰 News Headlines</h3>
+                                </div>
+                                <div class="panel-content">
+                                    <div class="news-brief" id="news-brief">
+                                        <div class="loading-spinner"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Removed quick stats - moved to Treasury -->
                         </div>
                     </div>
                 </div>
@@ -365,6 +338,38 @@
                         </div>
                         <div class="panel-content">
                             <canvas id="burn-chart" width="300" height="150"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="panel runway-panel">
+                        <div class="panel-header">
+                            <h3>Cash Runway</h3>
+                            <div class="runway-months" id="runway-months">-- months</div>
+                        </div>
+                        <div class="panel-content">
+                            <canvas id="runway-chart" width="300" height="150"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="panel budget-panel">
+                        <div class="panel-header">
+                            <h3>Budget Tracking</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div id="budget-tracking">
+                                <div class="loading-spinner"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel financing-panel">
+                        <div class="panel-header">
+                            <h3>Deal Financing</h3>
+                        </div>
+                        <div class="panel-content">
+                            <div id="deal-financing">
+                                <div class="loading-spinner"></div>
+                            </div>
                         </div>
                     </div>
 

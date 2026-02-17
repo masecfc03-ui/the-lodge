@@ -2421,6 +2421,230 @@ body {
     }
 }
 
+/* Enhanced Treasury Styles */
+.runway-panel .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.runway-months {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--lodge-gold);
+}
+
+.budget-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.budget-item {
+    background: rgba(93, 42, 31, 0.3);
+    border: 1px solid var(--lodge-brass);
+    border-radius: 8px;
+    padding: 1rem;
+    transition: all 0.3s ease;
+}
+
+.budget-item:hover {
+    background: rgba(93, 42, 31, 0.5);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-panel);
+}
+
+.budget-item.over-budget {
+    border-color: var(--status-down);
+    background: rgba(255, 107, 107, 0.1);
+}
+
+.budget-item.warning {
+    border-color: var(--status-warning);
+    background: rgba(255, 215, 0, 0.1);
+}
+
+.budget-item.on-track {
+    border-color: var(--status-active);
+    background: rgba(50, 205, 50, 0.1);
+}
+
+.budget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.budget-category {
+    font-weight: 600;
+    color: var(--text-gold);
+}
+
+.budget-percentage {
+    font-weight: 700;
+    color: var(--lodge-gold);
+    font-size: 1.1em;
+}
+
+.budget-bar {
+    height: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.budget-progress {
+    height: 100%;
+    background: linear-gradient(90deg, var(--status-active), var(--status-warning), var(--status-down));
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.budget-details {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9em;
+    color: var(--text-muted);
+}
+
+.remaining.positive {
+    color: var(--status-active);
+}
+
+.remaining.negative {
+    color: var(--status-down);
+    font-weight: 600;
+}
+
+.financing-rates {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.rate-item {
+    background: rgba(93, 42, 31, 0.4);
+    border: 1px solid var(--lodge-brass);
+    border-radius: 8px;
+    padding: 0.75rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.rate-item:hover {
+    background: rgba(93, 42, 31, 0.6);
+    transform: translateY(-2px);
+    box-shadow: var(--glow-gold);
+}
+
+.rate-label {
+    display: block;
+    font-size: 0.9em;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+}
+
+.rate-value {
+    display: block;
+    font-size: 1.4em;
+    font-weight: 700;
+    color: var(--lodge-gold);
+}
+
+.buyer-capacity {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.capacity-metric {
+    background: rgba(74, 44, 26, 0.6);
+    border: 1px solid var(--lodge-light-wood);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.metric-label {
+    display: block;
+    font-size: 0.85em;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.metric-value {
+    display: block;
+    font-size: 1.3em;
+    font-weight: 600;
+    color: var(--text-gold);
+}
+
+.financing-impact h4 {
+    color: var(--lodge-gold);
+    margin-bottom: 0.75rem;
+    font-size: 1.1em;
+}
+
+.payment-scenarios {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.scenario {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    border-left: 3px solid var(--lodge-brass);
+}
+
+.scenario span:first-child {
+    color: var(--text-muted);
+    font-size: 0.9em;
+}
+
+.scenario span:last-child {
+    color: var(--lodge-gold);
+    font-weight: 600;
+}
+
+/* Enhanced Treasury Grid Layout */
+.treasury-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+@media (min-width: 1200px) {
+    .treasury-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .treasury-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .financing-rates,
+    .buyer-capacity {
+        grid-template-columns: 1fr;
+    }
+    
+    .scenario {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+}
+
 /* Print Styles */
 @media print {
     body {

@@ -1,0 +1,119 @@
+{
+  "generated_at": "2026-02-16T08:30:00Z",
+  "suggestions": [
+    {
+      "id": "follow_up_001",
+      "category": "deal_acceleration",
+      "priority": "HIGH",
+      "title": "Liberty County Owner Going Cold",
+      "message": "You haven't followed up with the Liberty County farm owner in 12 days. Last interaction showed strong interest. They mentioned making a decision by end of week.",
+      "action": "Send follow-up with updated market analysis",
+      "time_estimate": "30min",
+      "potential_impact": "Could secure $2.1M listing",
+      "type": "follow_up"
+    },
+    {
+      "id": "campaign_002",
+      "category": "marketing",
+      "priority": "MEDIUM", 
+      "title": "Liberty County Leads Untouched",
+      "message": "You have 47 Liberty County leads generated from last month's campaign, but only 12% have been contacted. Strike while the iron is hot.",
+      "action": "Batch call/text campaign to remaining leads",
+      "time_estimate": "2 hours",
+      "potential_impact": "Could generate 3-5 new appointments",
+      "type": "opportunity"
+    },
+    {
+      "id": "performance_003",
+      "category": "optimization",
+      "priority": "MEDIUM",
+      "title": "SMS Response Rate Analysis",
+      "message": "Your SMS response rate dropped to 18% this month (was 31% last month). Variant B messaging in your A/B tests is performing 2.3x better.",
+      "action": "Switch all agents to Variant B messaging templates",
+      "time_estimate": "45min",
+      "potential_impact": "Could improve lead conversion by 60%",
+      "type": "optimization"
+    },
+    {
+      "id": "timing_004",
+      "category": "strategic",
+      "priority": "LOW",
+      "title": "Perfect Treasury Review Window",
+      "message": "Tomorrow is a rest day and you have a light meeting schedule. Ideal time for deep Treasury analysis and Q1 budget review.",
+      "action": "Block 2-3 hours for financial review",
+      "time_estimate": "180min",
+      "potential_impact": "Better financial clarity for Q2 decisions",
+      "type": "timing"
+    },
+    {
+      "id": "streak_005",
+      "category": "momentum",
+      "priority": "LOW",
+      "title": "Training Streak Momentum",
+      "message": "You're on a 5-day training streak 🔥. Research shows streaks past 7 days increase long-term habit retention by 40%.",
+      "action": "Plan tomorrow's rest day activities to maintain momentum",
+      "time_estimate": "15min", 
+      "potential_impact": "Stronger long-term fitness habits",
+      "type": "encouragement"
+    },
+    {
+      "id": "efficiency_006",
+      "category": "productivity",
+      "priority": "MEDIUM",
+      "title": "Batch Similar Tasks",
+      "message": "You have 8 different property research tasks scattered across the week. Batching similar work can improve focus by 50%.",
+      "action": "Block Thursday morning for all research tasks",
+      "time_estimate": "20min to reschedule",
+      "potential_impact": "2-3 hours saved through focused work",
+      "type": "efficiency"
+    },
+    {
+      "id": "relationship_007", 
+      "category": "networking",
+      "priority": "MEDIUM",
+      "title": "Dormant High-Value Contacts",
+      "message": "Johnson referred 3 clients last year but you haven't touched base in 4 months. Past clients who feel neglected stop referring.",
+      "action": "Send personal check-in with market update",
+      "time_estimate": "25min",
+      "potential_impact": "Could reactivate referral pipeline",
+      "type": "relationship"
+    }
+  ],
+  "daily_insights": [
+    "Best call time today: 10:30 AM - 12:00 PM (based on your conversion data)",
+    "Weather is perfect for property showings this afternoon",
+    "3 of your leads are also being courted by competitors - prioritize contact",
+    "Your energy levels peak on Mondays - tackle the hardest tasks first"
+  ],
+  "opportunity_alerts": [
+    {
+      "alert": "New construction project announced in Liberty County",
+      "potential": "Early land acquisition opportunity",
+      "action": "Research project details and contact developers"
+    },
+    {
+      "alert": "Competitor agent left Johnson's area",
+      "potential": "Market share expansion opportunity", 
+      "action": "Reach out to their orphaned leads"
+    }
+  ],
+  "efficiency_tips": [
+    "Use voice messages for quick lead follow-ups - 3x faster than typing",
+    "Schedule property photos for same day as showings to maximize drive time",
+    "Pre-write common email responses - you send similar messages 12x per week"
+  ],
+  "suggested_automations": [
+    {
+      "process": "Lead nurturing drip campaign",
+      "time_saved": "4 hours/week",
+      "setup_time": "2 hours",
+      "roi": "200% efficiency gain"
+    },
+    {
+      "process": "Appointment reminder texts",
+      "time_saved": "1 hour/week", 
+      "setup_time": "30min",
+      "roi": "95% reduction in no-shows"
+    }
+  ]
+}

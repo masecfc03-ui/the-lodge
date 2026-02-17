@@ -1,0 +1,127 @@
+{
+  "today": {
+    "date": "2026-02-16",
+    "priority_tasks": [
+      {
+        "id": "critical-1",
+        "task": "Follow up with Liberty County farm listing - owner decision deadline",
+        "priority": "CRITICAL",
+        "time_estimate": "45min",
+        "deadline": "5:00 PM",
+        "status": "pending"
+      },
+      {
+        "id": "critical-2", 
+        "task": "Review Barfield Properties contract terms before 2 PM meeting",
+        "priority": "CRITICAL",
+        "time_estimate": "30min",
+        "deadline": "1:30 PM",
+        "status": "pending"
+      },
+      {
+        "id": "critical-3",
+        "task": "Send updated comps to Johnson - they're shopping other agents",
+        "priority": "CRITICAL",
+        "time_estimate": "20min",
+        "deadline": "End of day",
+        "status": "pending"
+      }
+    ],
+    "meetings": [
+      {
+        "time": "10:00 AM",
+        "title": "Barfield Properties - Contract Review",
+        "type": "client_meeting",
+        "duration": "60min",
+        "location": "Office",
+        "prep_needed": true
+      },
+      {
+        "time": "2:00 PM", 
+        "title": "Liberty County Farming Coalition",
+        "type": "networking",
+        "duration": "90min",
+        "location": "Community Center",
+        "prep_needed": false
+      },
+      {
+        "time": "4:30 PM",
+        "title": "Weekly Agent Check-in",
+        "type": "team_call",
+        "duration": "30min",
+        "location": "Zoom",
+        "prep_needed": false
+      }
+    ],
+    "deadlines": [
+      {
+        "item": "Johnson family comps analysis",
+        "time": "End of day",
+        "urgency": "high"
+      },
+      {
+        "item": "Liberty County owner response",
+        "time": "5:00 PM",
+        "urgency": "critical"
+      },
+      {
+        "item": "Marketing campaign approval",
+        "time": "Tomorrow 9 AM",
+        "urgency": "medium"
+      }
+    ],
+    "top_three": [
+      "Close Liberty County deal decision",
+      "Lock in Barfield Properties contract",
+      "Maintain Johnson family momentum"
+    ],
+    "routine_tasks": [
+      {
+        "task": "Check agent lead reports",
+        "status": "pending",
+        "time_estimate": "15min"
+      },
+      {
+        "task": "Review overnight inquiries", 
+        "status": "completed",
+        "time_estimate": "10min"
+      },
+      {
+        "task": "Update CRM with yesterday's calls",
+        "status": "pending",
+        "time_estimate": "20min"
+      },
+      {
+        "task": "Training session prep",
+        "status": "pending", 
+        "time_estimate": "30min"
+      }
+    ]
+  },
+  "quick_actions": [
+    {
+      "label": "Fire Marketing Email",
+      "action": "launch_campaign",
+      "icon": "📧",
+      "estimate": "5min"
+    },
+    {
+      "label": "Check Agent Reports",
+      "action": "review_agents",
+      "icon": "📊",
+      "estimate": "10min"
+    },
+    {
+      "label": "Log Workout",
+      "action": "training_log",
+      "icon": "💪",
+      "estimate": "2min"
+    },
+    {
+      "label": "Review Decisions",
+      "action": "decision_queue",
+      "icon": "⚖️",
+      "estimate": "15min"
+    }
+  ]
+}

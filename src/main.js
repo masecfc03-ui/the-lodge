@@ -313,14 +313,19 @@ class LodgeDashboard {
             'alerts.json',
             'changelog.json',
             'goals.json',
-            'emails.json'
+            'emails.json',
+            'tasks.json',
+            'weekly-plan.json',
+            'three-week-horizon.json',
+            'suggestions.json',
+            'streaks.json'
         ];
         
         console.log('📊 Loading data files...');
         
         for (const file of dataFiles) {
             try {
-                const response = await fetch(`/data/${file}`);
+                const response = await fetch(`/the-lodge/data/${file}`);
                 if (response.ok) {
                     const filename = file.replace('.json', '');
                     this.data[filename] = await response.json();
@@ -416,21 +421,43 @@ class LodgeDashboard {
     }
     
     renderMainHall() {
+        this.updateBriefingGreeting();
         this.updateRoomTimestamp();
         this.renderAgentStatusBar();
-        this.renderNetWorth();
-        this.renderBankBalances();
-        this.renderBurnRate();
-        this.renderRevenue();
-        this.renderDecisionQueue();
-        this.renderAlerts();
-        this.renderCalendar();
-        this.renderEmails();
-        this.renderPipelineSnapshot();
-        this.renderTraining();
+        this.renderStreaksAndMomentum();
+        this.renderQuickActions();
+        this.renderTodaysGamePlan();
+        this.renderSmartSuggestions();
+        this.renderBriefingCalendar();
+        this.renderPriorityEmails();
         this.renderWeather();
-        this.renderNews();
-        this.renderQuickStats();
+        this.renderPipelineCompact();
+        this.renderTrainingBrief();
+        this.renderAlerts();
+        this.renderWeeklyOverview();
+        this.renderHorizonView();
+        this.renderNewsBrief();
+    }
+    
+    updateBriefingGreeting() {
+        const greetingEl = document.getElementById('briefing-greeting');
+        if (greetingEl) {
+            const now = new Date();
+            const hour = now.getHours();
+            let greeting = 'Good morning';
+            if (hour >= 12 && hour < 17) greeting = 'Good afternoon';
+            else if (hour >= 17) greeting = 'Good evening';
+            
+            const options = { 
+                weekday: 'long',
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            const dateStr = now.toLocaleDateString('en-US', options);
+            
+            greetingEl.innerHTML = `${greeting}, Mason • ${dateStr}`;
+        }
     }
     
     updateRoomTimestamp() {
@@ -1676,6 +1703,9 @@ class LodgeDashboard {
     renderTreasury() {
         this.renderAccounts();
         this.renderBurnChart();
+        this.renderCashFlowRunway();
+        this.renderBudgetTracking();
+        this.renderDealFinancingCalc();
         this.renderSubscriptions();
         this.renderTransactions();
     }
@@ -1745,6 +1775,195 @@ class LodgeDashboard {
                 }
             }
         });
+    }
+    
+    renderCashFlowRunway() {
+        const canvas = document.getElementById('runway-chart');
+        if (!canvas || !this.data.treasury) return;
+        
+        // Destroy existing chart
+        if (this.charts.runway) {
+            this.charts.runway.destroy();
+        }
+        
+        const ctx = canvas.getContext('2d');
+        
+        // Calculate runway data
+        const currentCash = Object.values(this.data.treasury.account_balances)
+            .reduce((sum, account) => sum + account.balance, 0);
+        const monthlyBurn = this.data.treasury.cash_flow_30_days?.projected_monthly_burn || 847;
+        
+        // Project next 12 months
+        const labels = [];
+        const values = [];
+        let runningCash = currentCash;
+        
+        for (let i = 0; i < 12; i++) {
+            const date = new Date();
+            date.setMonth(date.getMonth() + i);
+            labels.push(date.toLocaleDateString('en-US', { month: 'short', year: '2-digit' }));
+            
+            values.push(Math.max(0, runningCash));
+            runningCash -= monthlyBurn;
+        }
+        
+        this.charts.runway = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Cash Runway',
+                    data: values,
+                    borderColor: '#32CD32',
+                    backgroundColor: 'rgba(50, 205, 50, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(212, 175, 55, 0.2)' },
+                        ticks: { 
+                            color: '#D4AF37',
+                            callback: function(value) {
+                                return '$' + (value/1000).toFixed(1) + 'K';
+                            }
+                        }
+                    },
+                    x: {
+                        grid: { color: 'rgba(212, 175, 55, 0.2)' },
+                        ticks: { color: '#D4AF37' }
+                    }
+                }
+            }
+        });
+        
+        // Update runway months display
+        const runwayMonths = Math.floor(currentCash / monthlyBurn);
+        const runwayEl = document.getElementById('runway-months');
+        if (runwayEl) {
+            runwayEl.textContent = runwayMonths + (runwayMonths === 1 ? ' month' : ' months');
+            
+            // Color code based on runway
+            if (runwayMonths < 3) {
+                runwayEl.style.color = '#FF4444';
+            } else if (runwayMonths < 6) {
+                runwayEl.style.color = '#FFA500';
+            } else {
+                runwayEl.style.color = '#32CD32';
+            }
+        }
+    }
+    
+    renderBudgetTracking() {
+        const container = document.getElementById('budget-tracking');
+        if (!container || !this.data.treasury?.budget_tracking) return;
+        
+        const currentMonth = Object.keys(this.data.treasury.budget_tracking)[0];
+        const budget = this.data.treasury.budget_tracking[currentMonth];
+        
+        let budgetHTML = '<div class="budget-items">';
+        
+        Object.entries(budget).forEach(([category, data]) => {
+            const categoryName = category.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            const percentUsed = data.percentage;
+            const statusClass = percentUsed > 100 ? 'over-budget' : percentUsed > 80 ? 'warning' : 'on-track';
+            
+            budgetHTML += `
+                <div class="budget-item ${statusClass}">
+                    <div class="budget-header">
+                        <span class="budget-category">${categoryName}</span>
+                        <span class="budget-percentage">${percentUsed}%</span>
+                    </div>
+                    <div class="budget-bar">
+                        <div class="budget-progress" style="width: ${Math.min(percentUsed, 100)}%"></div>
+                    </div>
+                    <div class="budget-details">
+                        <span>${this.formatCurrency(data.actual)} / ${this.formatCurrency(data.budgeted)}</span>
+                        <span class="remaining ${data.remaining < 0 ? 'negative' : 'positive'}">
+                            ${data.remaining < 0 ? 'Over by' : 'Remaining'}: ${this.formatCurrency(Math.abs(data.remaining))}
+                        </span>
+                    </div>
+                </div>
+            `;
+        });
+        
+        budgetHTML += '</div>';
+        container.innerHTML = budgetHTML;
+    }
+    
+    renderDealFinancingCalc() {
+        const container = document.getElementById('deal-financing');
+        if (!container || !this.data.treasury?.deal_financing) return;
+        
+        const rates = this.data.treasury.deal_financing.current_rates;
+        const buyerCapacity = this.data.treasury.deal_financing.buyer_capacity;
+        
+        const financingHTML = `
+            <div class="financing-rates">
+                <div class="rate-item">
+                    <span class="rate-label">Hard Money</span>
+                    <span class="rate-value">${(rates.hard_money * 100).toFixed(1)}%</span>
+                </div>
+                <div class="rate-item">
+                    <span class="rate-label">Private Lending</span>
+                    <span class="rate-value">${(rates.private_lending * 100).toFixed(1)}%</span>
+                </div>
+                <div class="rate-item">
+                    <span class="rate-label">Conventional</span>
+                    <span class="rate-value">${(rates.conventional * 100).toFixed(1)}%</span>
+                </div>
+            </div>
+            
+            <div class="buyer-capacity">
+                <div class="capacity-metric">
+                    <span class="metric-label">Median Buyer Max</span>
+                    <span class="metric-value">${this.formatCurrency(buyerCapacity.at_current_rates.median_buyer_max)}</span>
+                </div>
+                <div class="capacity-metric">
+                    <span class="metric-label">Cash Buyers</span>
+                    <span class="metric-value">${(buyerCapacity.at_current_rates.cash_buyer_percentage * 100).toFixed(0)}%</span>
+                </div>
+            </div>
+            
+            <div class="financing-impact">
+                <h4>Rate Impact on $300K Property:</h4>
+                <div class="payment-scenarios">
+                    <div class="scenario">
+                        <span>Hard Money (${(rates.hard_money * 100).toFixed(1)}%)</span>
+                        <span>$${this.calculateMonthlyPayment(300000, rates.hard_money).toLocaleString()}/mo</span>
+                    </div>
+                    <div class="scenario">
+                        <span>Private (${(rates.private_lending * 100).toFixed(1)}%)</span>
+                        <span>$${this.calculateMonthlyPayment(300000, rates.private_lending).toLocaleString()}/mo</span>
+                    </div>
+                    <div class="scenario">
+                        <span>Conventional (${(rates.conventional * 100).toFixed(1)}%)</span>
+                        <span>$${this.calculateMonthlyPayment(300000, rates.conventional).toLocaleString()}/mo</span>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        container.innerHTML = financingHTML;
+    }
+    
+    calculateMonthlyPayment(principal, annualRate, years = 30) {
+        const monthlyRate = annualRate / 12;
+        const numPayments = years * 12;
+        
+        if (monthlyRate === 0) return principal / numPayments;
+        
+        return (principal * monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / 
+               (Math.pow(1 + monthlyRate, numPayments) - 1);
     }
     
     renderSubscriptions() {

@@ -1,0 +1,166 @@
+{
+  "horizon_start": "2026-02-16",
+  "horizon_end": "2026-03-08",
+  "focus_areas": [
+    "Liberty County market penetration",
+    "Q1 pipeline optimization",
+    "Team expansion prep"
+  ],
+  "weeks": {
+    "week1": {
+      "dates": "Feb 16-22",
+      "theme": "Liberty County Push",
+      "major_goals": [
+        "Close 2 pending deals",
+        "Launch Liberty County campaign",
+        "Complete agent performance reviews"
+      ],
+      "key_milestones": [
+        "Feb 17: Campaign go-live",
+        "Feb 19: Q1 pipeline review",
+        "Feb 21: Performance evaluations due"
+      ],
+      "prep_needed": [
+        "Finalize campaign creative assets",
+        "Prepare performance review docs",
+        "Schedule contractor meetings"
+      ]
+    },
+    "week2": {
+      "dates": "Feb 23-Mar 1", 
+      "theme": "Market Expansion",
+      "major_goals": [
+        "Execute Liberty County ground game",
+        "Recruit 2 new agents",
+        "Launch Houston market research"
+      ],
+      "key_milestones": [
+        "Feb 25: Real estate conference (Houston)",
+        "Feb 27: New agent interviews",
+        "Mar 1: Monthly pipeline review"
+      ],
+      "prep_needed": [
+        "Book Houston conference travel (DO THIS WEEK)",
+        "Post job listings for new agents",
+        "Prepare conference presentation materials"
+      ]
+    },
+    "week3": {
+      "dates": "Mar 2-8",
+      "theme": "Q1 Close Strong",
+      "major_goals": [
+        "Push Q1 deals across finish line",
+        "Finalize Q2 strategy",
+        "Team building retreat planning"
+      ],
+      "key_milestones": [
+        "Mar 3: Q2 strategy presentation",
+        "Mar 5: Team retreat location decision",
+        "Mar 7: Q1 results compilation"
+      ],
+      "prep_needed": [
+        "Research team retreat locations",
+        "Draft Q2 strategy document", 
+        "Schedule Q1 wrap-up meetings"
+      ]
+    }
+  },
+  "upcoming_payments": [
+    {
+      "date": "2026-02-20",
+      "item": "Marketing software renewals",
+      "amount": "$2,847",
+      "category": "operations"
+    },
+    {
+      "date": "2026-02-28",
+      "item": "Office lease",
+      "amount": "$4,200",
+      "category": "overhead"
+    },
+    {
+      "date": "2026-03-01",
+      "item": "Team bonuses (Q1 performance)",
+      "amount": "$8,500",
+      "category": "compensation"
+    },
+    {
+      "date": "2026-03-05",
+      "item": "Conference fees & travel",
+      "amount": "$1,850",
+      "category": "business_dev"
+    }
+  ],
+  "training_schedule": {
+    "key_dates": [
+      {
+        "date": "2026-02-25",
+        "event": "5K training benchmark test",
+        "type": "fitness_milestone"
+      },
+      {
+        "date": "2026-03-08",
+        "event": "Austin Half Marathon",
+        "type": "race_day",
+        "prep_status": "on_track"
+      }
+    ],
+    "race_countdown": {
+      "days_until_race": 21,
+      "training_days_remaining": 15,
+      "current_phase": "peak_training"
+    }
+  },
+  "project_milestones": [
+    {
+      "project": "Liberty County Market Entry",
+      "milestone": "Campaign launch",
+      "date": "2026-02-17",
+      "status": "ready"
+    },
+    {
+      "project": "Team Expansion",
+      "milestone": "New agent hires",
+      "date": "2026-02-27",
+      "status": "in_progress"
+    },
+    {
+      "project": "Q2 Strategy",
+      "milestone": "Strategy document completion", 
+      "date": "2026-03-03",
+      "status": "planning"
+    },
+    {
+      "project": "CRM Upgrade",
+      "milestone": "System migration",
+      "date": "2026-03-10",
+      "status": "scheduled"
+    }
+  ],
+  "critical_prep_items": [
+    {
+      "item": "Book Houston conference travel",
+      "deadline": "This week",
+      "urgency": "HIGH",
+      "impact": "Could miss networking opportunity"
+    },
+    {
+      "item": "Finalize Liberty County campaign assets",
+      "deadline": "Feb 16 EOD",
+      "urgency": "CRITICAL",
+      "impact": "Delays campaign launch"
+    },
+    {
+      "item": "Prepare Q1 performance review documents",
+      "deadline": "Feb 20",
+      "urgency": "MEDIUM",
+      "impact": "Team reviews pushed back"
+    },
+    {
+      "item": "Research team retreat locations",
+      "deadline": "Feb 28",
+      "urgency": "MEDIUM",
+      "impact": "Limited venue options"
+    }
+  ]
+}

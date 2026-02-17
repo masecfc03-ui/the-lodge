@@ -1,0 +1,114 @@
+{
+  "week_of": "2026-02-16",
+  "week_theme": "Liberty County Push & Pipeline Acceleration",
+  "weekly_goals": {
+    "deals": {
+      "target": 3,
+      "progress": 1,
+      "status": "on_track"
+    },
+    "new_leads": {
+      "target": 25,
+      "progress": 8,
+      "status": "behind"
+    },
+    "training_days": {
+      "target": 5,
+      "progress": 2,
+      "status": "on_track"
+    }
+  },
+  "days": {
+    "monday": {
+      "date": "2026-02-16",
+      "theme": "Deal Acceleration",
+      "priority": "Liberty County + Barfield closure",
+      "key_meetings": [
+        "Barfield Properties (10 AM)",
+        "Liberty Coalition (2 PM)"
+      ],
+      "training": "Upper body strength",
+      "status": "today"
+    },
+    "tuesday": {
+      "date": "2026-02-17",
+      "theme": "Lead Generation",
+      "priority": "Houston market prospecting",
+      "key_meetings": [
+        "Marketing team sync (9 AM)",
+        "New agent onboarding (3 PM)"
+      ],
+      "training": "Rest day",
+      "status": "upcoming"
+    },
+    "wednesday": {
+      "date": "2026-02-18",
+      "theme": "Pipeline Review",
+      "priority": "Agent performance check-ins",
+      "key_meetings": [
+        "1-on-1 with Sarah (10 AM)",
+        "1-on-1 with Mike (11 AM)",
+        "1-on-1 with Jenny (2 PM)"
+      ],
+      "training": "Cardio + core",
+      "status": "upcoming"
+    },
+    "thursday": {
+      "date": "2026-02-19", 
+      "theme": "Market Expansion",
+      "priority": "Liberty County campaign launch",
+      "key_meetings": [
+        "Marketing campaign review (10 AM)",
+        "Contractor network meeting (2 PM)"
+      ],
+      "training": "Lower body strength",
+      "status": "upcoming"
+    },
+    "friday": {
+      "date": "2026-02-20",
+      "theme": "Week Wrap & Planning",
+      "priority": "Review results, plan next week",
+      "key_meetings": [
+        "Team all-hands (9 AM)",
+        "Strategy planning session (2 PM)"
+      ],
+      "training": "Active recovery",
+      "status": "upcoming"
+    }
+  },
+  "milestones": [
+    {
+      "date": "2026-02-17",
+      "milestone": "Liberty County marketing campaign go-live",
+      "importance": "high"
+    },
+    {
+      "date": "2026-02-19",
+      "milestone": "Q1 pipeline review completion",
+      "importance": "medium"
+    },
+    {
+      "date": "2026-02-21",
+      "milestone": "New agent performance evaluations due",
+      "importance": "medium"
+    }
+  ],
+  "progress_tracking": {
+    "deals_closed": {
+      "this_week": 1,
+      "last_week": 2,
+      "trend": "down"
+    },
+    "pipeline_health": {
+      "hot_leads": 12,
+      "warm_leads": 28,
+      "cold_leads": 45,
+      "trend": "stable"
+    },
+    "team_performance": {
+      "total_showings": 23,
+      "conversion_rate": "18%",
+      "avg_response_time": "12 minutes"
+    }
+  }
+}

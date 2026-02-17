@@ -1,0 +1,132 @@
+{
+  "current_streaks": {
+    "training": {
+      "days": 5,
+      "type": "workout",
+      "start_date": "2026-02-11",
+      "status": "active",
+      "next_milestone": 7,
+      "emoji": "🔥"
+    },
+    "deal_closes": {
+      "days": 3,
+      "type": "business",
+      "start_date": "2026-02-13",
+      "status": "active", 
+      "next_milestone": 5,
+      "emoji": "💰"
+    },
+    "early_wake": {
+      "days": 12,
+      "type": "discipline",
+      "start_date": "2026-02-04",
+      "status": "active",
+      "next_milestone": 14,
+      "emoji": "🌅"
+    },
+    "lead_contact": {
+      "days": 8,
+      "type": "business",
+      "start_date": "2026-02-08",
+      "status": "active",
+      "next_milestone": 10,
+      "emoji": "📞"
+    }
+  },
+  "momentum_indicators": {
+    "deals_this_month": {
+      "current": 4,
+      "last_month": 2,
+      "trend": "strong_up",
+      "trend_emoji": "📈"
+    },
+    "response_rate": {
+      "current": "18%",
+      "last_period": "31%",
+      "trend": "down",
+      "trend_emoji": "📉",
+      "note": "Testing new messaging - early data"
+    },
+    "training_consistency": {
+      "this_month": "83%",
+      "last_month": "71%",
+      "trend": "up",
+      "trend_emoji": "💪"
+    },
+    "team_performance": {
+      "current": "Strong",
+      "trend": "stable", 
+      "trend_emoji": "⚡",
+      "note": "All agents hitting targets"
+    }
+  },
+  "recent_wins": [
+    {
+      "date": "2026-02-15",
+      "win": "Closed Barfield Properties deal",
+      "value": "$1.8M",
+      "category": "deal"
+    },
+    {
+      "date": "2026-02-14",
+      "win": "5-mile run personal best",
+      "value": "32:15",
+      "category": "fitness"
+    },
+    {
+      "date": "2026-02-13",
+      "win": "Recruited Sarah to team",
+      "value": "Top performer potential",
+      "category": "team"
+    },
+    {
+      "date": "2026-02-12",
+      "win": "Liberty County campaign approved",
+      "value": "$50k budget",
+      "category": "marketing"
+    }
+  ],
+  "milestone_progress": {
+    "q1_goals": {
+      "deals_target": 15,
+      "deals_current": 8,
+      "progress_percent": 53,
+      "on_track": true
+    },
+    "fitness_goals": {
+      "race_ready": "Austin Half Marathon",
+      "race_date": "2026-03-08",
+      "days_remaining": 21,
+      "training_completion": "78%",
+      "on_track": true
+    },
+    "team_goals": {
+      "agents_target": 8,
+      "agents_current": 6,
+      "progress_percent": 75,
+      "on_track": true
+    }
+  },
+  "streak_history": {
+    "longest_training_streak": {
+      "days": 23,
+      "period": "Dec 2025 - Jan 2026"
+    },
+    "longest_deal_streak": {
+      "days": 7,
+      "period": "January 2026"
+    },
+    "best_month": {
+      "month": "January 2026",
+      "deals": 6,
+      "training_days": 28,
+      "early_wake_days": 31
+    }
+  },
+  "motivational_messages": [
+    "5-day training streak - you're building unstoppable momentum 🔥",
+    "Early wake streak at 12 days - discipline compound interest is paying off",
+    "3 deals in 3 days - you're in the zone 💰",
+    "8 straight days of lead contact - consistency creates opportunity"
+  ]
+}
