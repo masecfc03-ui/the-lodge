@@ -5,17 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Lodge — Mathis Land Co</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         
+        :root {
+            --lodge-primary: #8b4513;
+            --lodge-secondary: #a0522d;
+            --lodge-accent: #ff8c00;
+            --lodge-gold: #ffd700;
+            --lodge-dark: #2d1810;
+            --lodge-darker: #1a0f08;
+            --lodge-light: #e6d3a3;
+            --lodge-text-secondary: #c4a374;
+            --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --shadow-hard: 0 4px 16px rgba(0, 0, 0, 0.4);
+            --gradient-glass: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1), 
+                rgba(255, 255, 255, 0.05)
+            );
+            --backdrop-blur: blur(16px);
+        }
+        
         body {
-            font-family: 'Courier New', monospace;
-            background-color: #2d1810;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: radial-gradient(circle at 50% 50%, #2d1810 0%, #1a0f08 100%);
             overflow: hidden;
-            color: #e6d3a3;
+            color: var(--lodge-light);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         
         #game-container {
@@ -24,14 +46,15 @@
             height: 100vh;
         }
         
-        /* HUD Elements */
+        /* Enhanced HUD Elements */
+        
         #hud {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             z-index: 1000;
-            padding: 20px;
+            padding: 24px;
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
@@ -39,40 +62,173 @@
         }
         
         .hud-element {
-            background: rgba(45, 24, 16, 0.9);
-            border: 2px solid #8b4513;
-            border-radius: 8px;
-            padding: 10px 15px;
-            font-size: 14px;
-            font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+            background: var(--gradient-glass);
+            backdrop-filter: var(--backdrop-blur);
+            -webkit-backdrop-filter: var(--backdrop-blur);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 16px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            text-shadow: none;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
         
-        /* Interaction Prompt */
-        #interaction-prompt {
+        .hud-element::before {
+            content: '';
             position: absolute;
-            bottom: 100px;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        }
+        
+        /* Agent Status Bar */
+        
+        .agent-status-bar {
+            position: absolute;
+            top: 24px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(45, 24, 16, 0.95);
-            border: 2px solid #ff8c00;
-            border-radius: 8px;
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            text-align: center;
-            color: #ff8c00;
-            display: none;
-            z-index: 1001;
-            animation: pulse 2s infinite;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: var(--gradient-glass);
+            backdrop-filter: var(--backdrop-blur);
+            -webkit-backdrop-filter: var(--backdrop-blur);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 12px 20px;
+            box-shadow: var(--shadow-soft);
+            pointer-events: none;
         }
         
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 5px #ff8c00; }
-            50% { box-shadow: 0 0 20px #ff8c00; }
+        .status-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            position: relative;
+        }
+        
+        .agent-name {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--lodge-light);
+            opacity: 0.9;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .last-report {
+            font-size: 10px;
+            color: var(--lodge-text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .status-indicator {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            position: absolute;
+            top: -2px;
+            right: -6px;
+        }
+        
+        .status-indicator.active {
+            background: #32cd32;
+            box-shadow: 0 0 8px rgba(50, 205, 50, 0.6);
+        }
+        
+        .status-indicator.away {
+            background: #ffa500;
+            box-shadow: 0 0 8px rgba(255, 165, 0, 0.6);
+        }
+        
+        .status-indicator.idle {
+            background: #888;
+            box-shadow: 0 0 8px rgba(136, 136, 136, 0.4);
+        }
+        
+        .unread-counter {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--lodge-accent);
+            color: white;
+            border-radius: 12px;
+            min-width: 24px;
+            height: 20px;
+            margin-left: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(255, 140, 0, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .agent-status-bar {
+                transform: translateX(-50%) scale(0.85);
+                gap: 12px;
+                padding: 8px 16px;
+            }
+            
+            .agent-name {
+                font-size: 10px;
+            }
+            
+            .last-report {
+                font-size: 9px;
+            }
+        }
+        
+        /* Enhanced Interaction Prompt */
+        
+        #interaction-prompt {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient-glass);
+            backdrop-filter: var(--backdrop-blur);
+            -webkit-backdrop-filter: var(--backdrop-blur);
+            border: 1px solid var(--lodge-accent);
+            border-radius: 20px;
+            padding: 16px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            color: var(--lodge-accent);
+            display: none;
+            z-index: 1001;
+            box-shadow: 
+                var(--shadow-soft),
+                0 0 20px rgba(255, 140, 0, 0.3);
+            animation: pulseGlow 2s infinite;
+            letter-spacing: 0.5px;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% { 
+                transform: translateX(-50%) scale(1);
+                box-shadow: 
+                    var(--shadow-soft),
+                    0 0 20px rgba(255, 140, 0, 0.3);
+            }
+            50% { 
+                transform: translateX(-50%) scale(1.05);
+                box-shadow: 
+                    var(--shadow-soft),
+                    0 0 30px rgba(255, 140, 0, 0.5);
+            }
         }
         
         /* Overlay Panel */
+        
         #overlay {
             position: fixed;
             top: 0;
@@ -143,6 +299,7 @@
         }
         
         /* Mobile Controls */
+        
         #mobile-controls {
             position: fixed;
             bottom: 0;
@@ -188,6 +345,7 @@
         }
         
         /* Minimap */
+        
         #minimap {
             position: absolute;
             bottom: 20px;
@@ -201,6 +359,7 @@
         }
         
         /* Responsive */
+        
         @media (max-width: 768px) {
             #panel {
                 width: 100vw;
@@ -219,6 +378,7 @@
         }
         
         /* Stats and data styling */
+        
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -292,7 +452,9 @@
         }
         
         .member-status.active { background: #32cd32; }
+        
         .member-status.away { background: #ffa500; }
+        
         .member-status.busy { background: #ff4444; }
         
         .member-info h4 {
@@ -306,6 +468,67 @@
             font-size: 12px;
             margin: 0;
         }
+        
+        /* Report System Styles */
+        
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: var(--lodge-text-secondary);
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--lodge-accent);
+            color: white;
+            border-color: var(--lodge-accent);
+        }
+        
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: var(--lodge-text-secondary);
+            padding: 4px 8px;
+            font-size: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            text-transform: uppercase;
+        }
+        
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--lodge-accent);
+            color: white;
+            border-color: var(--lodge-accent);
+        }
+        
+        .report-item {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
     </style>
   <script type="module" crossorigin src="/the-lodge/assets/index-CZQjfAWy.js"></script>
 </head>
@@ -317,6 +540,33 @@
             <div id="lodge-info" class="hud-element">
                 <div>The Lodge — Mathis Land Co</div>
                 <div id="clock" style="font-size: 12px; margin-top: 5px;">--:-- --</div>
+            </div>
+        </div>
+        
+        <!-- Agent Status Bar -->
+        <div id="agent-status-bar" class="agent-status-bar">
+            <div class="status-item">
+                <span class="agent-name">Scout</span>
+                <span class="last-report">12m ago</span>
+                <div class="status-indicator active"></div>
+            </div>
+            <div class="status-item">
+                <span class="agent-name">Builder</span>
+                <span class="last-report">1h ago</span>
+                <div class="status-indicator active"></div>
+            </div>
+            <div class="status-item">
+                <span class="agent-name">Tim</span>
+                <span class="last-report">45m ago</span>
+                <div class="status-indicator away"></div>
+            </div>
+            <div class="status-item">
+                <span class="agent-name">Tracker</span>
+                <span class="last-report">2h ago</span>
+                <div class="status-indicator idle"></div>
+            </div>
+            <div class="unread-counter">
+                <span class="unread-count">7</span>
             </div>
         </div>
         
