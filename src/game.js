@@ -11,15 +11,15 @@ export class GameScene extends Phaser.Scene {
         this.wallThickness = 30;
         
         this.rooms = {
-            'Training Room': { x: 230, y: 180, object: { x: 230, y: 180, type: 'training' }, color: '#3d2214', baseColor: 0x3d2214 },
-            'War Room': { x: 630, y: 180, object: { x: 630, y: 180, type: 'desk' }, color: '#3e2415', baseColor: 0x3e2415 },
-            'Barracks': { x: 1030, y: 180, object: { x: 1030, y: 180, type: 'bunks' }, color: '#3f2516', baseColor: 0x3f2516 },
-            'Treasury': { x: 230, y: 480, object: { x: 230, y: 480, type: 'safe' }, color: '#402617', baseColor: 0x402617 },
-            'Main Hall': { x: 630, y: 480, object: { x: 630, y: 480, type: 'dashboard' }, color: '#412718', baseColor: 0x412718 },
-            'Command Center': { x: 1030, y: 480, object: { x: 1030, y: 480, type: 'radio' }, color: '#422819', baseColor: 0x422819 },
-            'Lounge': { x: 230, y: 780, object: { x: 230, y: 780, type: 'jukebox' }, color: '#43291a', baseColor: 0x43291a },
-            'Library': { x: 630, y: 780, object: { x: 630, y: 780, type: 'bookshelf' }, color: '#442a1b', baseColor: 0x442a1b },
-            'Watchtower': { x: 1030, y: 780, object: { x: 1030, y: 780, type: 'monitors' }, color: '#452b1c', baseColor: 0x452b1c }
+            'Training Room': { x: 230, y: 180, object: { x: 230, y: 180, type: 'training' }, color: '#5D4037', baseColor: 0x5D4037 },
+            'War Room': { x: 630, y: 180, object: { x: 630, y: 180, type: 'desk' }, color: '#6D4C41', baseColor: 0x6D4C41 },
+            'Barracks': { x: 1030, y: 180, object: { x: 1030, y: 180, type: 'bunks' }, color: '#5D4037', baseColor: 0x5D4037 },
+            'Treasury': { x: 230, y: 480, object: { x: 230, y: 480, type: 'safe' }, color: '#8D6E63', baseColor: 0x8D6E63 },
+            'Main Hall': { x: 630, y: 480, object: { x: 630, y: 480, type: 'dashboard' }, color: '#6D4C41', baseColor: 0x6D4C41 },
+            'Command Center': { x: 1030, y: 480, object: { x: 1030, y: 480, type: 'radio' }, color: '#5D4037', baseColor: 0x5D4037 },
+            'Lounge': { x: 230, y: 780, object: { x: 230, y: 780, type: 'jukebox' }, color: '#8D6E63', baseColor: 0x8D6E63 },
+            'Library': { x: 630, y: 780, object: { x: 630, y: 780, type: 'bookshelf' }, color: '#6D4C41', baseColor: 0x6D4C41 },
+            'Watchtower': { x: 1030, y: 780, object: { x: 1030, y: 780, type: 'monitors' }, color: '#5D4037', baseColor: 0x5D4037 }
         };
         
         this.currentRoom = 'Main Hall';
@@ -37,6 +37,9 @@ export class GameScene extends Phaser.Scene {
         this.createStoneTexture();
         this.createMetalTexture();
         this.createLeatherTexture();
+        
+        // Create lodge atmosphere
+        this.createLodgeTexture();
     }
     
     createWoodTexture() {
@@ -172,6 +175,61 @@ export class GameScene extends Phaser.Scene {
         texture.refresh();
     }
     
+    createLodgeTexture() {
+        const texture = this.textures.createCanvas('lodge_floor', 512, 512);
+        const canvas = texture.getSourceImage();
+        const ctx = canvas.getContext('2d');
+        
+        // Rich wood floor with multiple tones
+        const gradient = ctx.createRadialGradient(256, 256, 50, 256, 256, 350);
+        gradient.addColorStop(0, '#8B4513');
+        gradient.addColorStop(0.3, '#A0522D');
+        gradient.addColorStop(0.6, '#654321');
+        gradient.addColorStop(1, '#3E2723');
+        
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 512, 512);
+        
+        // Add rich wood planks
+        for (let y = 0; y < 512; y += 64) {
+            const plankShade = 0.9 + Math.random() * 0.2;
+            ctx.fillStyle = `rgba(139, 69, 19, ${plankShade})`;
+            ctx.fillRect(0, y, 512, 60);
+            
+            // Plank details
+            ctx.strokeStyle = `rgba(62, 39, 35, 0.6)`;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(512, y);
+            ctx.stroke();
+            
+            // Wood grain
+            for (let i = 0; i < 8; i++) {
+                const grainY = y + Math.random() * 60;
+                const grainOpacity = 0.1 + Math.random() * 0.2;
+                ctx.strokeStyle = `rgba(62, 39, 35, ${grainOpacity})`;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(0, grainY);
+                ctx.lineTo(512, grainY);
+                ctx.stroke();
+            }
+        }
+        
+        // Add warm lighting overlay
+        const lightGradient = ctx.createRadialGradient(256, 256, 100, 256, 256, 300);
+        lightGradient.addColorStop(0, 'rgba(255, 165, 0, 0.15)');
+        lightGradient.addColorStop(1, 'rgba(255, 140, 0, 0.05)');
+        
+        ctx.fillStyle = lightGradient;
+        ctx.globalCompositeOperation = 'overlay';
+        ctx.fillRect(0, 0, 512, 512);
+        ctx.globalCompositeOperation = 'source-over';
+        
+        texture.refresh();
+    }
+    
     create() {
         // Create ambient lighting
         this.createAmbientLighting();
@@ -219,55 +277,177 @@ export class GameScene extends Phaser.Scene {
     }
     
     createWorldBackground() {
-        // Create a rich gradient background
+        // Create a sophisticated lodge environment
         const graphics = this.add.graphics();
         
-        // Outer forest area - dark gradient
-        graphics.fillGradientStyle(0x0a1f0a, 0x0a1f0a, 0x162a16, 0x162a16, 1);
+        // Rich forest environment
+        graphics.fillGradientStyle(0x0F2027, 0x0F2027, 0x203A43, 0x2C5364, 0.95);
         graphics.fillRect(0, 0, 1300, 1000);
         
-        // Lodge foundation shadow
-        graphics.fillStyle(0x000000, 0.4);
-        graphics.fillRect(25, 25, 1250, 950);
+        // Add environmental depth layers
+        graphics.fillGradientStyle(0x1a332e, 0x1a332e, 0x0d1f1a, 0x0d1f1a, 0.8);
+        graphics.fillRect(0, 0, 1300, 200); // Top tree line
         
-        // Lodge perimeter with warm glow
-        graphics.fillGradientStyle(0x5a3a2a, 0x4a2a1a, 0x3a1a0a, 0x2a1a0a, 1);
-        graphics.fillRect(30, 30, 1240, 940);
+        graphics.fillGradientStyle(0x1a332e, 0x1a332e, 0x0d1f1a, 0x0d1f1a, 0.6);
+        graphics.fillRect(0, 800, 1300, 200); // Bottom tree line
+        
+        // Lodge foundation with professional lighting
+        const foundationShadow = this.add.graphics();
+        foundationShadow.fillStyle(0x000000, 0.5);
+        foundationShadow.fillRoundedRect(20, 20, 1260, 960, 15);
+        foundationShadow.setBlendMode(Phaser.BlendModes.MULTIPLY);
+        
+        // Main lodge structure
+        graphics.fillGradientStyle(0x5D4037, 0x4E342E, 0x3E2723, 0x2E1E17, 0.95);
+        graphics.fillRoundedRect(30, 30, 1240, 940, 10);
+        
+        // Lodge exterior trim
+        graphics.lineStyle(3, 0x8D6E63, 0.8);
+        graphics.strokeRoundedRect(30, 30, 1240, 940, 10);
+        
+        // Professional exterior lighting
+        const exteriorLights = [
+            { x: 150, y: 50 }, { x: 650, y: 50 }, { x: 1150, y: 50 },
+            { x: 50, y: 300 }, { x: 1250, y: 300 },
+            { x: 50, y: 700 }, { x: 1250, y: 700 },
+            { x: 150, y: 950 }, { x: 650, y: 950 }, { x: 1150, y: 950 }
+        ];
+        
+        exteriorLights.forEach(light => {
+            const lightGlow = this.add.circle(light.x, light.y, 80, 0xFFB74D, 0.08);
+            lightGlow.setBlendMode(Phaser.BlendModes.ADD);
+            
+            const lightBulb = this.add.circle(light.x, light.y, 6, 0xFFF9C4, 0.9);
+            lightBulb.setStroke(0xFFB74D, 2);
+            
+            // Gentle flickering
+            this.tweens.add({
+                targets: [lightGlow, lightBulb],
+                alpha: { from: lightGlow.alpha, to: lightGlow.alpha * 1.3 },
+                duration: 3000 + Math.random() * 2000,
+                yoyo: true,
+                repeat: -1,
+                ease: 'Sine.easeInOut'
+            });
+        });
+        
+        // Add professional pathways
+        this.createProfessionalPathways(graphics);
         
         this.worldBackground = graphics;
     }
     
-    createPlayer() {
-        // Enhanced player with glow and better trail
-        this.player = this.add.circle(630, 480, 18, 0x32cd32);
+    createProfessionalPathways(graphics) {
+        // Main entrance pathway
+        graphics.fillStyle(0x6D4C41, 0.8);
+        graphics.fillRoundedRect(600, 30, 100, 50, 5);
         
-        // Add glow effect to player
-        this.playerGlow = this.add.circle(630, 480, 25, 0x32cd32, 0.3);
+        // Interior corridors (subtle)
+        graphics.lineStyle(2, 0x5D4037, 0.4);
+        
+        // Horizontal corridors
+        graphics.moveTo(30, 330);
+        graphics.lineTo(1270, 330);
+        graphics.moveTo(30, 630);
+        graphics.lineTo(1270, 630);
+        
+        // Vertical corridors  
+        graphics.moveTo(430, 30);
+        graphics.lineTo(430, 970);
+        graphics.moveTo(830, 30);
+        graphics.lineTo(830, 970);
+        
+        graphics.strokePath();
+        
+        // Professional corner accents
+        const corners = [
+            [30, 30], [1270, 30], [30, 970], [1270, 970]
+        ];
+        
+        corners.forEach(([x, y]) => {
+            graphics.fillStyle(0x8D6E63, 0.6);
+            graphics.fillRoundedRect(x - 15, y - 15, 30, 30, 8);
+            
+            graphics.lineStyle(2, 0xFFB74D, 0.7);
+            graphics.strokeRoundedRect(x - 15, y - 15, 30, 30, 8);
+        });
+    }
+    
+    createPlayer() {
+        // Professional player avatar with modern design
+        const playerBase = this.add.graphics();
+        playerBase.x = 630;
+        playerBase.y = 480;
+        
+        // Modern circular base with gradient
+        playerBase.fillGradientStyle(0x32CD32, 0x32CD32, 0x228B22, 0x228B22, 0.9);
+        playerBase.fillCircle(0, 0, 18);
+        
+        // Professional border
+        playerBase.lineStyle(3, 0x2F4F2F, 0.8);
+        playerBase.strokeCircle(0, 0, 18);
+        
+        // Inner tech ring
+        playerBase.lineStyle(2, 0x90EE90, 0.6);
+        playerBase.strokeCircle(0, 0, 12);
+        
+        this.player = playerBase;
+        
+        // Sophisticated glow effect
+        this.playerGlow = this.add.circle(630, 480, 28, 0x32CD32, 0.25);
         this.playerGlow.setBlendMode(Phaser.BlendModes.ADD);
         
-        // Player label with better styling
+        // Professional identification
         this.playerLabel = this.add.text(630, 480, 'M', {
-            fontSize: '20px',
+            fontSize: '24px',
             fontFamily: 'Arial Black, sans-serif',
-            color: '#ffffff',
-            fontWeight: 'bold',
-            stroke: '#000000',
-            strokeThickness: 2
+            color: '#FFFFFF',
+            fontWeight: '900',
+            stroke: '#1A5D1A',
+            strokeThickness: 3
         }).setOrigin(0.5);
+        
+        // Modern HUD ring around player
+        this.playerHUD = this.add.graphics();
+        this.playerHUD.x = 630;
+        this.playerHUD.y = 480;
+        this.playerHUD.lineStyle(2, 0x00CED1, 0.6);
+        this.playerHUD.strokeCircle(0, 0, 32);
+        this.playerHUD.setVisible(false);
         
         // Enable physics for player
         this.physics.add.existing(this.player);
         this.player.body.setCollideWorldBounds(true);
         this.player.body.setSize(36, 36);
         
-        // Create enhanced trail effect (5 fading circles with glow)
+        // Enhanced professional trail system
         this.playerTrail = [];
-        for (let i = 0; i < 5; i++) {
-            const trailCircle = this.add.circle(630, 480, 16 - i * 2, 0x32cd32, 0.8 - i * 0.15);
+        for (let i = 0; i < 7; i++) {
+            const trailSize = 15 - i * 2;
+            const trailAlpha = 0.6 - i * 0.08;
+            
+            const trailCircle = this.add.graphics();
+            trailCircle.fillStyle(0x32CD32, trailAlpha);
+            trailCircle.fillCircle(0, 0, trailSize);
+            trailCircle.x = 630;
+            trailCircle.y = 480;
             trailCircle.visible = false;
             trailCircle.setBlendMode(Phaser.BlendModes.ADD);
+            
             this.playerTrail.push(trailCircle);
         }
+        
+        // Professional pulse animation
+        this.tweens.add({
+            targets: this.playerGlow,
+            scaleX: { from: 1.0, to: 1.15 },
+            scaleY: { from: 1.0, to: 1.15 },
+            alpha: { from: 0.25, to: 0.4 },
+            duration: 2000,
+            yoyo: true,
+            repeat: -1,
+            ease: 'Sine.easeInOut'
+        });
     }
     
     createRooms() {
@@ -312,36 +492,68 @@ export class GameScene extends Phaser.Scene {
     }
     
     createRoomFloor(x, y, w, h, room) {
-        // Base floor with wood texture
-        const floorBase = this.add.tileSprite(x, y, w, h, 'wood');
+        // Enhanced lodge floor with rich textures
+        const floorBase = this.add.tileSprite(x, y, w, h, 'lodge_floor');
         floorBase.setTint(room.baseColor);
+        floorBase.setAlpha(0.9);
         
-        // Floor pattern overlay
-        const floorPattern = this.add.graphics();
-        floorPattern.lineStyle(1, 0x000000, 0.1);
+        // Add depth with layered shadows
+        const floorShadow = this.add.rectangle(x + 3, y + 3, w, h, 0x000000, 0.2);
+        floorShadow.setDepth(-1);
         
-        // Create wooden plank lines
-        const plankHeight = 25;
-        for (let i = -h/2; i < h/2; i += plankHeight) {
-            const lineY = y + i;
-            floorPattern.moveTo(x - w/2, lineY);
-            floorPattern.lineTo(x + w/2, lineY);
+        // Rich area rug in center for comfort
+        if (['Main Hall', 'Lounge', 'Library'].includes(Object.keys(this.rooms).find(key => this.rooms[key].x === x && this.rooms[key].y === y))) {
+            const rugSize = Math.min(w, h) * 0.6;
+            const rug = this.add.ellipse(x, y, rugSize, rugSize * 0.8, 0x8B0000, 0.3);
+            rug.setStroke(0x654321, 3);
+            rug.setDepth(-0.5);
+            
+            // Rug pattern
+            const rugPattern = this.add.graphics();
+            rugPattern.lineStyle(2, 0x654321, 0.4);
+            rugPattern.strokeEllipse(x, y, rugSize * 0.5, rugSize * 0.4);
+            rugPattern.strokeEllipse(x, y, rugSize * 0.3, rugSize * 0.24);
+            rugPattern.setDepth(-0.4);
+            
+            this.roomFloors.add(rug);
+            this.roomFloors.add(rugPattern);
         }
-        floorPattern.strokePath();
         
-        // Add subtle room lighting gradient
-        const roomLight = this.add.graphics();
-        roomLight.fillGradientStyle(
-            room.baseColor, room.baseColor, 
-            Phaser.Display.Color.GetColor32(0, 0, 0, 0.3), Phaser.Display.Color.GetColor32(0, 0, 0, 0.3), 
-            0.7
-        );
-        roomLight.fillRect(x - w/2, y - h/2, w, h);
-        roomLight.setBlendMode(Phaser.BlendModes.MULTIPLY);
+        // Professional lighting for different room types
+        let lightingIntensity = 0.1;
+        let lightingColor = 0xFFA500;
         
+        const roomName = Object.keys(this.rooms).find(key => this.rooms[key].x === x && this.rooms[key].y === y);
+        if (roomName === 'Command Center' || roomName === 'War Room') {
+            lightingColor = 0x00CED1; // Cooler blue for tech rooms
+            lightingIntensity = 0.15;
+        } else if (roomName === 'Treasury') {
+            lightingColor = 0xFFD700; // Gold for treasury
+            lightingIntensity = 0.12;
+        }
+        
+        const roomLight = this.add.circle(x, y - h * 0.15, Math.max(w, h) * 0.7, lightingColor, lightingIntensity);
+        roomLight.setBlendMode(Phaser.BlendModes.ADD);
+        
+        // Add professional corner accents
+        const cornerAccents = this.add.graphics();
+        cornerAccents.fillStyle(0x8B4513, 0.6);
+        
+        // Corner trim pieces
+        const cornerSize = 12;
+        const corners = [
+            [x - w/2, y - h/2], [x + w/2, y - h/2], 
+            [x - w/2, y + h/2], [x + w/2, y + h/2]
+        ];
+        
+        corners.forEach(([cx, cy]) => {
+            cornerAccents.fillRect(cx - cornerSize/2, cy - cornerSize/2, cornerSize, cornerSize);
+        });
+        
+        this.roomFloors.add(floorShadow);
         this.roomFloors.add(floorBase);
-        this.roomFloors.add(floorPattern);
         this.roomFloors.add(roomLight);
+        this.roomFloors.add(cornerAccents);
     }
     
     createRoomAmbience(x, y, w, h, room) {
@@ -455,85 +667,94 @@ export class GameScene extends Phaser.Scene {
         const type = room.object.type;
         const baseColor = this.getObjectColor(type);
         
-        // Object shadow
-        const shadowOffset = 5;
-        const shadow = this.add.ellipse(x + shadowOffset, y + shadowOffset, 70, 35, 0x000000, 0.4);
+        // Professional workstation base
+        const stationBase = this.add.graphics();
+        stationBase.fillStyle(0x2F1B14, 0.9);
+        stationBase.fillRoundedRect(x - 45, y - 35, 90, 70, 12);
+        stationBase.lineStyle(2, 0x8B4513, 0.8);
+        stationBase.strokeRoundedRect(x - 45, y - 35, 90, 70, 12);
         
-        // Base object with texture based on type
-        const obj = this.add.circle(x, y, 30, baseColor);
-        if (this.getObjectTexture(type)) {
-            obj.setTexture(this.getObjectTexture(type));
-        }
+        // Enhanced shadow with depth
+        const shadow = this.add.graphics();
+        shadow.fillStyle(0x000000, 0.3);
+        shadow.fillEllipse(x + 3, y + 38, 85, 25);
+        shadow.setDepth(-1);
         
-        // Glow effect
-        const glow = this.add.circle(x, y, 35, baseColor, 0.3);
-        glow.setBlendMode(Phaser.BlendModes.ADD);
+        // Modern workstation surface
+        const surface = this.add.graphics();
+        surface.fillGradientStyle(0x5D4037, 0x5D4037, 0x4E342E, 0x4E342E, 1);
+        surface.fillRoundedRect(x - 40, y - 30, 80, 60, 8);
         
-        // Highlight ring
-        const highlight = this.add.circle(x, y, 32, 0x000000, 0);
-        highlight.setStrokeStyle(3, 0xffd700, 0.8);
+        // Professional equipment based on type
+        this.createProfessionalEquipment(x, y, type, baseColor);
         
-        // Enhanced emoji icon with shadow
-        const emoji = this.getObjectEmoji(type);
-        const emojiShadow = this.add.text(x + 1, y + 1, emoji, {
-            fontSize: '26px',
+        // Status indicator lights
+        const statusLight = this.add.circle(x + 35, y - 25, 4, 0x32CD32, 0.9);
+        statusLight.setStroke(0x228B22, 1);
+        
+        // Modern holographic display effect
+        const holoRing = this.add.circle(x, y, 45, 0x00CED1, 0.1);
+        holoRing.setStroke(0x00CED1, 2);
+        holoRing.setBlendMode(Phaser.BlendModes.ADD);
+        
+        // Interactive glow
+        const interactGlow = this.add.circle(x, y, 50, baseColor, 0.2);
+        interactGlow.setBlendMode(Phaser.BlendModes.ADD);
+        
+        // Professional label
+        const stationLabel = this.add.text(x, y + 50, this.getStationName(type), {
+            fontSize: '14px',
             fontFamily: 'Arial, sans-serif',
-            color: '#000000'
-        }).setOrigin(0.5).setAlpha(0.3);
-        
-        const emojiLabel = this.add.text(x, y, emoji, {
-            fontSize: '26px',
-            fontFamily: 'Arial, sans-serif'
+            fontWeight: 'bold',
+            color: '#E6D3A3',
+            stroke: '#2F1B14',
+            strokeThickness: 2
         }).setOrigin(0.5);
         
-        // Create particle effects for certain objects
-        if (type === 'training') {
-            this.createTrainingEffect(x, y);
-        } else if (type === 'monitors') {
-            this.createAlertEffect(x, y);
-        }
+        // Modern particle effects
+        this.createModernEffects(x, y, type);
         
-        // Add physics
+        // Create the main interactive object
+        const obj = this.add.circle(x, y, 35, 0x000000, 0);
         this.physics.add.existing(obj);
         obj.body.setImmovable(true);
         obj.roomName = roomName;
         obj.objectType = type;
-        obj.emoji = emojiLabel;
-        obj.glow = glow;
-        obj.highlight = highlight;
-        obj.shadow = shadow;
+        obj.glow = interactGlow;
+        obj.holoRing = holoRing;
+        obj.statusLight = statusLight;
         
         this.interactiveObjects.add(obj);
         
-        // Enhanced pulsing animation
+        // Professional animations
         this.tweens.add({
-            targets: [glow, highlight],
-            alpha: { from: 0.8, to: 0.3 },
-            scaleX: { from: 1.0, to: 1.2 },
-            scaleY: { from: 1.0, to: 1.2 },
+            targets: holoRing,
+            scaleX: { from: 1.0, to: 1.15 },
+            scaleY: { from: 1.0, to: 1.15 },
+            alpha: { from: 0.3, to: 0.1 },
+            duration: 2500,
+            yoyo: true,
+            repeat: -1,
+            ease: 'Sine.easeInOut'
+        });
+        
+        this.tweens.add({
+            targets: interactGlow,
+            alpha: { from: 0.2, to: 0.4 },
             duration: 2000,
             yoyo: true,
             repeat: -1,
             ease: 'Sine.easeInOut'
         });
         
-        // Floating animation for emoji
+        // Status light blinking
         this.tweens.add({
-            targets: [emojiLabel, emojiShadow],
-            y: { from: y - 3, to: y + 3 },
-            duration: 3000,
+            targets: statusLight,
+            alpha: { from: 1, to: 0.3 },
+            duration: 1500,
             yoyo: true,
             repeat: -1,
             ease: 'Sine.easeInOut'
-        });
-        
-        // Rotating highlight effect
-        this.tweens.add({
-            targets: highlight,
-            rotation: Math.PI * 2,
-            duration: 8000,
-            repeat: -1,
-            ease: 'Linear'
         });
     }
     
@@ -698,6 +919,155 @@ export class GameScene extends Phaser.Scene {
         return emojis[type] || '❓';
     }
     
+    createProfessionalEquipment(x, y, type, baseColor) {
+        const equipment = this.add.graphics();
+        
+        switch(type) {
+            case 'dashboard':
+                // Modern dashboard screens
+                equipment.fillStyle(0x1A1A1A);
+                equipment.fillRoundedRect(x - 25, y - 15, 50, 30, 4);
+                equipment.lineStyle(1, 0x00CED1);
+                equipment.strokeRoundedRect(x - 25, y - 15, 50, 30, 4);
+                
+                // Screen glow
+                equipment.fillStyle(0x00CED1, 0.3);
+                equipment.fillRoundedRect(x - 23, y - 13, 46, 26, 3);
+                break;
+                
+            case 'radio':
+                // Communication array
+                equipment.fillStyle(0x2F2F2F);
+                equipment.fillCircle(x, y, 20);
+                equipment.lineStyle(3, 0xFF8C00);
+                equipment.strokeCircle(x, y, 18);
+                
+                // Antenna
+                equipment.lineStyle(2, 0xFFFFFF);
+                equipment.moveTo(x, y - 20);
+                equipment.lineTo(x, y - 35);
+                equipment.strokePath();
+                break;
+                
+            case 'safe':
+                // Secure vault
+                equipment.fillStyle(0x4A4A4A);
+                equipment.fillRoundedRect(x - 20, y - 20, 40, 40, 6);
+                equipment.lineStyle(2, 0xFFD700);
+                equipment.strokeRoundedRect(x - 20, y - 20, 40, 40, 6);
+                
+                // Lock mechanism
+                equipment.fillStyle(0xFFD700);
+                equipment.fillCircle(x, y, 8);
+                break;
+                
+            case 'monitors':
+                // Surveillance setup
+                equipment.fillStyle(0x1A1A1A);
+                equipment.fillRoundedRect(x - 22, y - 12, 44, 24, 3);
+                equipment.fillRoundedRect(x - 18, y - 8, 36, 16, 2);
+                
+                equipment.lineStyle(1, 0xFF4444);
+                equipment.strokeRoundedRect(x - 22, y - 12, 44, 24, 3);
+                break;
+                
+            case 'training':
+                // Fitness equipment
+                equipment.fillStyle(0x4A4A4A);
+                equipment.fillRect(x - 15, y - 10, 30, 20);
+                equipment.lineStyle(2, 0xFF4500);
+                equipment.strokeRect(x - 15, y - 10, 30, 20);
+                
+                // Weight plates
+                equipment.fillStyle(0xFF4500);
+                equipment.fillCircle(x - 10, y, 6);
+                equipment.fillCircle(x + 10, y, 6);
+                break;
+                
+            default:
+                // Generic workstation
+                equipment.fillStyle(0x3E3E3E);
+                equipment.fillRoundedRect(x - 18, y - 12, 36, 24, 4);
+                equipment.lineStyle(1, baseColor);
+                equipment.strokeRoundedRect(x - 18, y - 12, 36, 24, 4);
+        }
+    }
+    
+    getStationName(type) {
+        const names = {
+            training: 'FITNESS',
+            desk: 'STRATEGY',
+            bunks: 'REPORTS',
+            safe: 'TREASURY',
+            dashboard: 'OVERVIEW',
+            radio: 'COMMS',
+            jukebox: 'AUDIO',
+            bookshelf: 'ARCHIVES',
+            monitors: 'SECURITY'
+        };
+        return names[type] || 'STATION';
+    }
+    
+    createModernEffects(x, y, type) {
+        // Add subtle ambient particles for tech stations
+        if (['dashboard', 'radio', 'monitors'].includes(type)) {
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    const spark = this.add.circle(
+                        x + (Math.random() - 0.5) * 40,
+                        y + (Math.random() - 0.5) * 30,
+                        1,
+                        0x00CED1,
+                        0.8
+                    );
+                    
+                    spark.setBlendMode(Phaser.BlendModes.ADD);
+                    
+                    this.tweens.add({
+                        targets: spark,
+                        y: y - 20 - Math.random() * 15,
+                        alpha: 0,
+                        duration: 2000 + Math.random() * 1000,
+                        ease: 'Quad.easeOut',
+                        onComplete: () => spark.destroy()
+                    });
+                }, Math.random() * 3000);
+            }
+            
+            // Repeat the effect
+            setTimeout(() => this.createModernEffects(x, y, type), 4000);
+        }
+        
+        // Energy effects for training station
+        if (type === 'training') {
+            for (let i = 0; i < 2; i++) {
+                setTimeout(() => {
+                    const energy = this.add.circle(
+                        x + (Math.random() - 0.5) * 30,
+                        y + 10,
+                        1 + Math.random() * 2,
+                        0xFF4500,
+                        0.7
+                    );
+                    
+                    energy.setBlendMode(Phaser.BlendModes.ADD);
+                    
+                    this.tweens.add({
+                        targets: energy,
+                        y: y - 25 - Math.random() * 20,
+                        x: x + (Math.random() - 0.5) * 40,
+                        alpha: 0,
+                        duration: 1800 + Math.random() * 700,
+                        ease: 'Quad.easeOut',
+                        onComplete: () => energy.destroy()
+                    });
+                }, Math.random() * 2500);
+            }
+            
+            setTimeout(() => this.createModernEffects(x, y, type), 3500);
+        }
+    }
+    
     setupInput() {
         // Keyboard input
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -779,38 +1149,52 @@ export class GameScene extends Phaser.Scene {
         // Update player label position (centered on player)
         this.playerLabel.setPosition(this.player.x, this.player.y);
         
+        // Update player HUD position
+        this.playerHUD.setPosition(this.player.x, this.player.y);
+        
         // Enhanced player trail effect
         const isMoving = velocityX !== 0 || velocityY !== 0;
         if (isMoving) {
+            // Show HUD ring when moving
+            this.playerHUD.setVisible(true);
+            
             // Show and update trail when moving
             this.playerTrail.forEach((trail, index) => {
                 trail.visible = true;
-                const delay = (index + 1) * 60; // Stagger the trail more smoothly
+                const delay = (index + 1) * 80; // Stagger the trail more smoothly
                 this.time.delayedCall(delay, () => {
-                    trail.setPosition(this.player.x, this.player.y);
+                    trail.x = this.player.x;
+                    trail.y = this.player.y;
                 });
             });
             
-            // Create movement particles
-            if (Math.random() < 0.3) {
-                const dust = this.add.circle(
-                    this.player.x + (Math.random() - 0.5) * 20,
-                    this.player.y + 15,
-                    2,
-                    0x8b4513,
-                    0.6
+            // Create professional movement particles
+            if (Math.random() < 0.2) {
+                const energy = this.add.circle(
+                    this.player.x + (Math.random() - 0.5) * 25,
+                    this.player.y + 12,
+                    1 + Math.random(),
+                    0x00CED1,
+                    0.7
                 );
                 
+                energy.setBlendMode(Phaser.BlendModes.ADD);
+                
                 this.tweens.add({
-                    targets: dust,
+                    targets: energy,
                     alpha: 0,
-                    scaleX: 0.2,
-                    scaleY: 0.2,
-                    duration: 500,
-                    onComplete: () => dust.destroy()
+                    scaleX: 0.1,
+                    scaleY: 0.1,
+                    y: energy.y - 15,
+                    duration: 600,
+                    ease: 'Quad.easeOut',
+                    onComplete: () => energy.destroy()
                 });
             }
         } else {
+            // Hide HUD ring when stationary
+            this.playerHUD.setVisible(false);
+            
             // Hide trail when stationary
             this.playerTrail.forEach(trail => {
                 trail.visible = false;
